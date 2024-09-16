@@ -1,0 +1,36 @@
+{% extends "todo/base.html" %}
+{% block title %} Todo Items {% endblock %}
+
+{% block content %}
+    <h2>Todo Items</h2>
+    {% if todo_items %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th><a href="?order_by=due_date">Due Date</a></th>
+            <th>Status</th>
+            <th><a href="?order_by=priority_order">Priority</a></th>
+        </tr>
+        {% for td in todo_items %}
+        <tr> 
+            <td>{{ td.title }}</td>
+            <td>{{ td.description }}</td>
+            <td>{{ td.due_date }}</td>
+            <td>
+                {% if td.is_completed %}
+                Completed
+                {% else %}
+                <a href="{% url 'mark_completed' td.id %}">Mark complete</a>
+                {% endif %}
+            </td>
+            <td>{{ td.get_priority_display }}</td>
+            <td><a href="{% url 'edit_todo_item' td.id %}">Edit</a></td>
+            <td><a href="{% url 'delete_confirmation' td.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+            <p>No todo items</p> 
+    {% endif %}
+{% endblock %}

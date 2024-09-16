@@ -1,0 +1,15 @@
+{% extends 'todo/base.html' %}
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+{% if results %}
+<h2>Search Results</h2>
+    <ul>
+        {%for result in results%}
+        <li>{{result}}</li>
+        {%endfor%}
+    </ul>
+{% else %}
+    No Todo items found
+{% endif %}
+{% endblock %}

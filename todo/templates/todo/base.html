@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'create_todo_item' %}">Create Todo Item</a>
+            <a href="{% url 'todo_list' %}">View All Todo Items</a>
+        </nav>
+        <form action="{% url 'search_results' %}" method="get">
+            <input name="search_text" type="text" placeholder="Search...">
+            <select name="search_type" id="search_type">
+                <option value="Title">Title</option>
+                <option value="Description">Description</option>
+            </select>
+        </form>
+    </header>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
+</body>
+</html>
