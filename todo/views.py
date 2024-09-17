@@ -5,19 +5,54 @@ from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
+from django.contrib.sites.shortcuts import get_current_site                             # Import the get_current_site function
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode          # Import the functions to encode and decode the uid
+from django.utils.encoding import force_bytes, force_str                            # Import the functions to convert the uid to bytes and vice versa
+from django.template.loader import render_to_string                                 # Import the function to render the email body   
+from django.core.mail import EmailMessage                                           # Import the EmailMessage class
+from django.contrib.auth.models import User                                         # Import the User model
+from django.contrib.auth.tokens import default_token_generator as token_generator   # Import the default token generator
 
 # Create your views here.
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user) # Automatically log in the user after registration
-            return redirect("todo_list")
+            user = form.save(commit=False)  # Save the form data to the database
+            user.is_active = False          # Set the user to inactive
+            user.save()                     # Save the user to the database
+
+            # Confirmation email
+            current_site = get_current_site(request)  # Get the current site
+            mail_subject = "Activate your account"    # Set the email subject
+            message = render_to_string("todo/email_confirmation.html", {
+                    "user": user,
+                    "domain": current_site.domain,
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),     # Encode the user id
+                    "token": token_generator.make_token(user),              # Generate the token
+                })
+            email = EmailMessage(mail_subject, message, to=[user.email])    # Create the email message
+            email.send()                                                    # Send the email
+
+            return render(request, 'todo/registration_pending.html')        # Pending message displayed to the user
     else:
         form = RegisterForm()
-
     return render(request, "todo/register.html", {"form": form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))  # Decode the user id
+        user = User.objects.get(pk=uid)                 # Get the user
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and token_generator.check_token(user, token):  # Check the token
+        user.is_active = True    # Activate the user
+        user.save()              # Save the user
+        login(request, user)     # Log the user in
+        return redirect("todo_list")  # Redirect to the todo list
+    else:
+        return render(request, "todo/activation_invalid.html")  # Invalid activation link
 
 @login_required
 def profile(request):

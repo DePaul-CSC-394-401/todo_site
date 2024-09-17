@@ -8,6 +8,7 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="todo/login.html"), name="login"), #User Login
     path("logout/", auth_views.LogoutView.as_view(), name="logout"), #User Logout
     path("profile/", views.profile, name="profile"), #User Profile
+    path("activate/<uidb64>/<token>/", views.activate, name="activate"), #User Activation
     path("", views.todo_list, name="todo_list"),
     path("create-todo-item", views.create_todo_item, name="create_todo_item"),
     path("edit-todo-item/<int:pk>/", views.edit_todo_item, name="edit_todo_item"),
