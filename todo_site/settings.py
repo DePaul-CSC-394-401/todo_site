@@ -130,3 +130,12 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "todo_list" # Redirect to todo_list after login
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" # For settings for sending emails
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"   # For settings for sending emails
+EMAIL_HOST = "smtp.gmail.com"                                   # Host for sending emails
+EMAIL_PORT = 587                                                # Port for sending emails
+EMAIL_USE_TLS = True                                            # Use TLS for sending emails
+EMAIL_HOST_USER = "kevinfloresmgmt@gmail.com"                        # Email address for sending emails
+EMAIL_HOST_PASSWORD = "ispxhoyqhniikhsh"                     # Email password for sending emails
