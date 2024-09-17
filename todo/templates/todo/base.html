@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
+<body style="background-color:rgb(162, 229, 237);">
     <header>
         <nav>
             <a href="{% url 'create_todo_item' %}">Create Todo Item</a>
@@ -13,10 +13,6 @@
         </nav>
         <form action="{% url 'search_results' %}" method="get">
             <input name="search_text" type="text" placeholder="Search...">
-            <select name="search_type" id="search_type">
-                <option value="Title">Title</option>
-                <option value="Description">Description</option>
-            </select>
         </form>
         <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display:inline;">
             {% csrf_token %}

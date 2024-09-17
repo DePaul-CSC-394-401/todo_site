@@ -6,29 +6,31 @@
     {% if todo_items %}
     <table>
         <tr>
-            <body style="background-color:rgb(162, 229, 237);"></body>
                 <th>Title</th> 
                 <th>Description</th>
                 <th><a href="?order_by=due_date">Due Date</a></th>
                 <th>Status</th>
                 <th><a href="?order_by=priority_order">Priority</a></th>
-            </body>
         </tr> 
         {% for td in todo_items %}
         <tr> 
             {% if td.is_completed %}
-            <td style="color:darkgreen;background-color:lime">Complete!</td> 
+            <td bgcolor = #8ACE00>{{ td.title }}</td>
+            <td bgcolor = #8ACE00>{{ td.description }}</td>
+            <td bgcolor = #8ACE00>{{ td.due_date }}</td>
+            <td bgcolor = #8ACE00> Completed </td>
+            <td bgcolor = #8ACE00>{{ td.get_priority_display }}</td>
+            <td bgcolor = #8ACE00><a href="{% url 'edit_todo_item' td.id %}">Edit</a></td>
+            <td bgcolor = #8ACE00><a href="{% url 'delete_confirmation' td.id %}">Delete</a></td>
             {% else %}
             <td>{{ td.title }}</td>
             <td>{{ td.description }}</td>
             <td>{{ td.due_date }}</td>
-            <td>
-                <a href="{% url 'mark_completed' td.id %}">Mark complete</a>
-                {% endif %}
-            </td>
+            <td><a href="{% url 'mark_completed' td.id %}">Mark Complete</a></td>
             <td>{{ td.get_priority_display }}</td>
             <td><a href="{% url 'edit_todo_item' td.id %}">Edit</a></td>
             <td><a href="{% url 'delete_confirmation' td.id %}">Delete</a></td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

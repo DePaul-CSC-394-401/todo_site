@@ -7,9 +7,14 @@
     {% if td_item %}
         <h2>{{td_item.title}}</h2>
         <form accept="" method="POST">
+            <button onclick=ChangesSaved() name ="Submit" type ="submit" value="Submit">Save Changes</button>
             {% csrf_token %}
             {{ todo_form }}
-            <input type="submit" value="Submit"></button>
+            <script>
+                function ChangesSaved(){
+                    alert("Your Todo Item Has Been Updated!");
+                }
+            </script>
         </form>
     {% else %}
     Todo Item does not exist

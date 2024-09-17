@@ -4,6 +4,7 @@ from .forms import TodoForm, RegisterForm, UpdateProfileForm
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required 
+from django.db.models import Q
 
 # Create your views here.
 def register(request):
@@ -64,11 +65,20 @@ def todo_list(request):
     return render(request, "todo/todo-list.html", {"todo_items": todo_items})
 
 
+# def search_results(request):
+#     curr_user = request.user
+#     search_text = request.GET.get("search_text")
+#     search_type = request.GET.get("search_type").lower()
+#     results = Todo_Item.search_by(search_type, search_text, curr_user)
+#     return render(request, "todo/search-results.html", {"results": results})
+
 def search_results(request):
-    curr_user = request.user
-    search_text = request.GET.get("search_text")
-    search_type = request.GET.get("search_type").lower()
-    results = Todo_Item.search_by(search_type, search_text, curr_user)
+    user = request.user
+    q = request.GET.get("search_text")
+    if q:
+        results = Todo_Item.objects.filter(user=user).filter(Q(title__icontains=q) | Q(description__icontains=q))
+    else:
+        results = Todo_Item.objects.all()
     return render(request, "todo/search-results.html", {"results": results})
 
 
