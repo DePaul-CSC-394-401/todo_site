@@ -1,9 +1,42 @@
 from django.shortcuts import redirect, render
 from .models import Todo_Item
-from .forms import TodoForm
-
+from .forms import TodoForm, RegisterForm, UpdateProfileForm
+from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required 
 
 # Create your views here.
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user) # Automatically log in the user after registration
+            return redirect("todo_list")
+    else:
+        form = RegisterForm()
+
+    return render(request, "todo/register.html", {"form": form})
+
+@login_required
+def profile(request):
+    if request.method == "POST":
+        profile_form = UpdateProfileForm(request.POST, instance=request.user)
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if profile_form.is_valid() and password_form.is_valid():
+            profile_form.save()
+            user = password_form.save()
+            update_session_auth_hash(request, user)
+            return redirect("profile")
+    else:
+        profile_form = UpdateProfileForm(instance=request.user)
+        password_form = PasswordChangeForm(request.user)
+
+    return render(request, "todo/profile.html", {
+        "profile_form": profile_form, 
+        "password_form": password_form
+        })
+
 def create_todo_item(request):
     curr_user = request.user
     if request.method == "POST":

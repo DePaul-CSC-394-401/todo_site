@@ -18,6 +18,10 @@
                 <option value="Description">Description</option>
             </select>
         </form>
+        <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
     </header>
     <main>
     {% block content %}
