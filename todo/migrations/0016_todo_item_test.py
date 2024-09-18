@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('todo', '0015_alter_todo_item_priority'),
+        ("todo", "0015_alter_todo_item_priority"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='todo_item',
-            name='test',
-            field=models.CharField(default='hello', max_length=55),
+            model_name="todo_item",
+            name="test",
+            field=models.CharField(default="hello", max_length=55),
             preserve_default=False,
         ),
     ]

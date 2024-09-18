@@ -3,6 +3,6 @@
 
 {% block content %}
 <h2>Confirm Deletion</h2>
-<a href="{% url 'delete_todo_item' td_item.id %}">Confirm Deletion</a>
-<a href="{% url 'todo_list' %}">Cancel</a>
+<a href="{% url 'todo:delete_todo_item' td_item.id %}">Confirm Deletion</a>
+<a href="{% url 'todo:todo_list' %}">Cancel</a>
 {% endblock%}

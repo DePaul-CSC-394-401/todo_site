@@ -10,9 +10,9 @@ class TodoQuerySet(models.QuerySet):
     def order_by_priority(self):
         return self.alias(
             priority_order=Case(
-                When(priority=Todo_Item.Priority.HIGH, then=Value(1)),
-                When(priority=Todo_Item.Priority.MEDIUM, then=Value(2)),
-                When(priority=Todo_Item.Priority.LOW, then=Value(3)),
+                When(priority=TodoItem.Priority.HIGH, then=Value(1)),
+                When(priority=TodoItem.Priority.MEDIUM, then=Value(2)),
+                When(priority=TodoItem.Priority.LOW, then=Value(3)),
             )
         ).order_by("priority_order", "title")
 
@@ -20,7 +20,7 @@ class TodoQuerySet(models.QuerySet):
         return self.alias().order_by("due_date")
 
 
-class Todo_Item(models.Model):
+class TodoItem(models.Model):
 
     class Priority(models.TextChoices):
         HIGH = "HIGH", _("High")
@@ -38,7 +38,7 @@ class Todo_Item(models.Model):
     @staticmethod
     def search_by(search_type, search_text, curr_user):
         return (
-            Todo_Item.objects.filter(user=curr_user)
+            TodoItem.objects.filter(user=curr_user)
             .annotate(search=SearchVector(search_type))
             .filter(search=search_text)
         )

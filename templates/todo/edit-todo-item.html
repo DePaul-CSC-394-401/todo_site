@@ -1,0 +1,18 @@
+{% extends "todo/base.html" %}
+{% block title %} Edit Todo Item {% endblock %}
+
+{% block content %}
+<h2>Edit Todo Item</h2>
+    
+    {% if td_item %}
+        <h2>{{td_item.title}}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ todo_form.as_p }}
+            <button name ="Submit" type ="submit" value="Submit">Save Changes</button>
+        </form>
+    {% else %}
+    Todo Item does not exist
+    {% endif %}
+
+{% endblock%}

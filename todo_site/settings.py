@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "todo.apps.TodoConfig",
+    "user_profile.apps.UserProfileConfig",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = "todo_site.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -78,13 +79,13 @@ WSGI_APPLICATION = "todo_site.wsgi.application"
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': 5432,
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_NAME"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": "db",
+        "PORT": 5432,
     }
 }
 
@@ -129,13 +130,12 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "todo_list" # Redirect to todo_list after login
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" # For settings for sending emails
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"   # For settings for sending emails
-EMAIL_HOST = "smtp.gmail.com"                                   # Host for sending emails
-EMAIL_PORT = 587                                                # Port for sending emails
-EMAIL_USE_TLS = True                                            # Use TLS for sending emails
-EMAIL_HOST_USER = "kevinfloresmgmt@gmail.com"                        # Email address for sending emails
-EMAIL_HOST_PASSWORD = "ispxhoyqhniikhsh"                     # Email password for sending emails
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend"  # For settings for sending emails
+)
+EMAIL_HOST = "smtp.gmail.com"  # Host for sending emails
+EMAIL_PORT = 587  # Port for sending emails
+EMAIL_USE_TLS = True  # Use TLS for sending emails
+EMAIL_HOST_USER = "kevinfloresmgmt@gmail.com"  # Email address for sending emails
+EMAIL_HOST_PASSWORD = "ispxhoyqhniikhsh"  # Email password for sending emails

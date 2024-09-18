@@ -1,0 +1,12 @@
+{% extends "user_profile/base.html" %}
+{% block title %} Login {% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Log In">
+    </form>
+    <p>Don't have an account?</p>
+    <a href="{% url 'user_profile:register' %}">Create New Account</a>
+{% endblock %}

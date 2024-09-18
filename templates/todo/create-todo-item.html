@@ -3,9 +3,9 @@
 
 {% block content %}
 <h2>Create Todo Item</h2>
-<form accept="" method="POST">
+<form method="POST">
     {% csrf_token %}
-    {{ todo_form }}
-    <input type="submit" value="Submit"></button>
+    {{ todo_form.as_p }}
+    <input type="submit" value="Submit">
 </form>
 {% endblock %}
