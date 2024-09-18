@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-</head>
-<body style="background-color:rgb(162, 229, 237);">
-    <header>
-        <nav>
-            <a href="{% url 'todo:create_todo_item' %}">Create Todo Item</a>
-            <a href="{% url 'todo:todo_list' %}">View All Todo Items</a>
-            <a href="{% url 'user_profile:profile' %}">Profile</a>
-            <a href="{% url 'user_profile:logout' %}">Log out</a>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body style="background-color:rgb(162, 229, 237);">
+        <header>
+            <nav>
+                <a href="{% url 'todo:create_todo_item' %}">Create Todo Item</a>
+                <a href="{% url 'todo:todo_list' %}">View All Todo Items</a>
+                <a href="{% url 'user_profile:profile' %}">Profile</a>
+                <a href="{% url 'user_profile:logout' %}">Log out</a>
 
-        </nav>
-        <form action="{% url 'todo:search_results' %}" method="get">
-            <label>
-                <input name="search_text" type="text" placeholder="Search...">
-            </label>
-        </form>
-    </header>
-    <main>
-    {% block content %}
-    {% endblock %}
-    </main>
-</body>
+            </nav>
+            <form action="{% url 'todo:search_results' %}" method="get">
+                <label>
+                    <input name="search_text" type="text" placeholder="Search...">
+                </label>
+            </form>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </body>
 </html>

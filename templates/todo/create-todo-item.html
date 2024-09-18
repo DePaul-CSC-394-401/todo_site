@@ -2,10 +2,10 @@
 {% block title %} Create New Todo Item {% endblock %}
 
 {% block content %}
-<h2>Create Todo Item</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ todo_form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+    <h2>Create Todo Item</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ todo_form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
 {% endblock %}

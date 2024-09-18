@@ -2,8 +2,7 @@
 {% block title %} Edit Todo Item {% endblock %}
 
 {% block content %}
-<h2>Edit Todo Item</h2>
-    
+    <h2>Edit Todo Item</h2>
     {% if td_item %}
         <h2>{{td_item.title}}</h2>
         <form method="POST">
@@ -12,7 +11,6 @@
             <button name ="Submit" type ="submit" value="Submit">Save Changes</button>
         </form>
     {% else %}
-    Todo Item does not exist
+        <p>Todo Item does not exist</p>
     {% endif %}
-
 {% endblock%}

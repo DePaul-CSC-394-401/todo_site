@@ -3,12 +3,12 @@
 
 {% block content %}
     {% if activation_message %}
-    <p>Activation Message</p>
+        <p>Activation Message</p>
     {% else %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Register">
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Register">
+        </form>
     {% endif %}
 {% endblock %}
