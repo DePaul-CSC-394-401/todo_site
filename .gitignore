@@ -2,4 +2,4 @@ data/*
 *.pyc
 venv/*
 .idea/*
-create-todos.sh
+/create-todos.sh
