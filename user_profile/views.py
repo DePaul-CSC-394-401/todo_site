@@ -107,7 +107,7 @@ def login(request):
         form = AuthenticationForm()
     return render(request, "user_profile/login.html", {"form": form})
 
-
+@login_required(login_url="user_profile:login")
 def logout(request):
     auth_logout(request)
     return render(
@@ -133,6 +133,7 @@ def profile(request):
     return render(request, "user_profile/profile.html", {"profile_form": profile_form})
 
 
+@login_required(login_url="user_profile:login")
 def reset_password(request):
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)
