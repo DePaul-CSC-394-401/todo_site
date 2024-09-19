@@ -1,8 +1,7 @@
 {% extends "todo/base.html" %}
 {% block title %}Deletion Confirmation{% endblock %}
-
 {% block content %}
-<h2>Confirm Deletion</h2>
+    <h2>Confirm Deletion</h2>
     <a href="{% url 'todo:delete_todo_item' td_item.id %}">Confirm Deletion</a>
     <a href="{% url 'todo:todo_list' %}">Cancel</a>
-{% endblock%}
+{% endblock %}

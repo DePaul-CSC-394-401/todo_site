@@ -1,6 +1,5 @@
 {% extends "user_profile/base.html" %}
-{% block title %} Profile {% endblock %}
-
+{% block title %}Profile{% endblock %}
 {% block content %}
     <header>
         <nav>
@@ -10,9 +9,7 @@
     </header>
     <main>
         <h2>Welcome {{ user.username }}</h2>
-        {% if updated %}
-            <p>Profile Successfully Updated.</p>
-        {% endif %}
+        {% if updated %}<p>Profile Successfully Updated.</p>{% endif %}
         <form method="POST">
             {% csrf_token %}
             {{ profile_form.as_p }}

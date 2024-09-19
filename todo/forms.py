@@ -1,5 +1,3 @@
-from turtledemo.penrose import start
-
 from django import forms
 from .models import TodoItem, Category
 
