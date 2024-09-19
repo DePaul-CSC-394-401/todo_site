@@ -8,15 +8,15 @@
             <tr>
                 <th>Title</th>
                 <th>
-                    <form id="category-filter-form" action="" method="GET">
+                    <form id="category-filter-form" method="GET">
                         <label for="filter-by-category">Category</label>
-                        <select name="filter-by-category" id="filter-by-category">
-                            <option value="">...</option>
+                        <select name="filter-by-category" id="filter-by-category" onchange="this.form.submit()">
+                            <option value="" selected disabled>Select A Category</option>
                             {% for category in categories %}
                                 <option value="{{ category.name }}">{{ category.name }}</option>
                             {% endfor %}
+                            <option value="">Show all</option>
                         </select>
-                        <button type="submit">Submit</button>
                     </form>
                 </th>
                 <th>Description</th>
