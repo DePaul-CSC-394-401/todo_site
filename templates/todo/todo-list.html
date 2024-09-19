@@ -26,24 +26,27 @@
             </tr>
             {% for td in todo_items %}
                 <tr>
-                    {% if td.is_completed %}
-                        <td bgcolor = #8ACE00>{{ td.title }}</td>
-                        <td bgcolor = #8ACE00>{{ td.category.name|default:"" }}</td>
-                        <td bgcolor = #8ACE00>{{ td.description }}</td>
-                        <td bgcolor = #8ACE00>{{ td.due_date }}</td>
-                        <td bgcolor = #8ACE00> Completed </td>
-                        <td bgcolor = #8ACE00>{{ td.get_priority_display }}</td>
-                        <td bgcolor = #8ACE00><a href="{% url 'todo:edit_todo_item' td.id %}">Edit</a></td>
-                        <td bgcolor = #8ACE00><a href="{% url 'todo:delete_confirmation' td.id %}">Delete</a></td>
-                    {% else %}
-                        <td>{{ td.title }}</td>
-                        <td>{{ td.category.name|default:"" }}</td>
-                        <td>{{ td.description }}</td>
-                        <td>{{ td.due_date }}</td>
-                        <td><a href="{% url 'todo:mark_completed' td.id %}">Mark Complete</a></td>
-                        <td>{{ td.get_priority_display }}</td>
-                        <td><a href="{% url 'todo:edit_todo_item' td.id %}">Edit</a></td>
-                        <td><a href="{% url 'todo:delete_confirmation' td.id %}">Delete</a></td>
+                    {% if not td.is_archived %}
+                        {% if td.is_completed %}
+                            <td bgcolor = #8ACE00>{{ td.title }}</td>
+                            <td bgcolor = #8ACE00>{{ td.category.name|default:"" }}</td>
+                            <td bgcolor = #8ACE00>{{ td.description }}</td>
+                            <td bgcolor = #8ACE00>{{ td.due_date }}</td>
+                            <td bgcolor = #8ACE00> Completed </td>
+                            <td bgcolor = #8ACE00>{{ td.get_priority_display }}</td>
+                            <td bgcolor = #8ACE00><a href="{% url 'todo:edit_todo_item' td.id %}">Edit</a></td>
+                            <td bgcolor = #8ACE00><a href="{% url 'todo:delete_confirmation' td.id %}">Delete</a></td>
+                            <td bgcolor = #8ACE00><a href="{% url 'todo:archive' td.id %}">Archive</a></td>
+                        {% else %}
+                            <td>{{ td.title }}</td>
+                            <td>{{ td.category.name|default:"" }}</td>
+                            <td>{{ td.description }}</td>
+                            <td>{{ td.due_date }}</td>
+                            <td><a href="{% url 'todo:mark_completed' td.id %}">Mark Complete</a></td>
+                            <td>{{ td.get_priority_display }}</td>
+                            <td><a href="{% url 'todo:edit_todo_item' td.id %}">Edit</a></td>
+                            <td><a href="{% url 'todo:delete_confirmation' td.id %}">Delete</a></td>
+                        {% endif %}
                     {% endif %}
                 </tr>
             {% endfor %}

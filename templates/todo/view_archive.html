@@ -1,0 +1,15 @@
+{% extends "todo/base.html" %}
+{% block title %}  Archive  {% endblock %}
+
+{% block content %}
+    <h2>Archive</h2>
+    {% if archived_td_items %}
+        <ul>
+            {% for td in archived_td_items %}
+            <li>{{ td }}    <a href="{% url 'todo:restore_from_archive' td.id %}">Restore</a> </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Todo items in Archive</p>
+    {% endif %}
+{% endblock %}

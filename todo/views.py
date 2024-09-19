@@ -1,5 +1,3 @@
-from unicodedata import category
-
 from django.shortcuts import redirect, render
 from .models import TodoItem, Category
 from .forms import TodoForm, CategoryForm
@@ -9,12 +7,12 @@ from django.db.models import Q
 
 @login_required(login_url="user_profile:login")
 def create_todo_item(request):
-    curr_user = request.user
+    user = request.user
     if request.method == "POST":
         todo_form = TodoForm(request.POST, initial={"category": None})
         if todo_form.is_valid():
             td_item = todo_form.save(commit=False)
-            td_item.user = curr_user
+            td_item.user = user
             td_item.save()
             return redirect("todo:todo_list")
     else:
@@ -22,17 +20,17 @@ def create_todo_item(request):
     return render(
         request,
         "todo/create-todo-item.html",
-        {"todo_form": todo_form, "curr_user": curr_user}
+        {"todo_form": todo_form, "user": user}
     )
 
 
 @login_required(login_url="user_profile:login")
 def todo_list(request):
-    curr_user = request.user
-    todo_items = TodoItem.objects.filter(user=curr_user)
+    user = request.user
+    todo_items = TodoItem.objects.filter(user=user)
     order_by = request.GET.get("order_by")
     filter_by_category = request.GET.get("filter-by-category")
-    categories = Category.objects.filter(user=curr_user)
+    categories = Category.objects.filter(user=user)
     if filter_by_category:
         todo_items = todo_items.filter(category__name=filter_by_category)
     if order_by == "priority_order":
@@ -101,12 +99,12 @@ def categories(request):
 
 @login_required(login_url="user_profile:login")
 def create_category(request):
-    curr_user = request.user
+    user = request.user
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
             category = form.save(commit=False)
-            category.user = curr_user
+            category.user = user
             category.save()
             return redirect("todo:categories")
     else:
@@ -121,10 +119,31 @@ def delete_category(request, pk):
     return redirect("todo:categories")
 
 
+def archive(request, pk):
+    td = TodoItem.objects.get(id=pk)
+    td.is_archived = True
+    td.save()
+    return redirect("todo:todo_list")
+
+
+@login_required(login_url="user_profile:login")
+def view_archive(request):
+    user = request.user
+    archived_td_items = TodoItem.objects.filter(user=user).filter(is_archived=True)
+    return render(request, "todo/view_archive.html", {"archived_td_items": archived_td_items})
+
+
+@login_required(login_url="user_profile:login")
+def restore_from_archive(request, pk):
+    td = TodoItem.objects.get(id=pk)
+    td.is_archived = False
+    td.save()
+    return redirect("todo:view_archive")
+
 
 # def search_results(request):
-#     curr_user = request.user
+#     user = request.user
 #     search_text = request.GET.get("search_text")
 #     search_type = request.GET.get("search_type").lower()
-#     results = Todo_Item.search_by(search_type, search_text, curr_user)
+#     results = Todo_Item.search_by(search_type, search_text, user)
 #     return render(request, "todo/search-results.html", {"results": results})

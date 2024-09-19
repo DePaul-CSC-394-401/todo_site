@@ -6,7 +6,7 @@
     {% if categories_list %}
         <ul>
             {% for category in categories_list %}
-                <li>{{ category }}</li>
+                <li>{{ category }}  <a href="{% url 'todo:delete_category' category.id %}">Delete</a></li>
             {% endfor %}
         </ul>
     {% else %}

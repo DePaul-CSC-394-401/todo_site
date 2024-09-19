@@ -45,6 +45,7 @@ class TodoItem(models.Model):
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(choices=Priority.choices)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    is_archived = models.BooleanField(default=False)
     objects = TodoQuerySet.as_manager()
 
     @staticmethod
