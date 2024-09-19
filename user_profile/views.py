@@ -107,6 +107,7 @@ def login(request):
         form = AuthenticationForm()
     return render(request, "user_profile/login.html", {"form": form})
 
+
 @login_required(login_url="user_profile:login")
 def logout(request):
     auth_logout(request)

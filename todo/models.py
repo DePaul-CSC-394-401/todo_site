@@ -41,9 +41,9 @@ class TodoItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
-    due_date = models.DateField()
+    due_date = models.DateTimeField()
     is_completed = models.BooleanField(default=False)
-    priority = models.CharField(choices=Priority.choices)
+    priority = models.CharField(choices=Priority.choices, null=True, blank=True)
     category = models.ForeignKey(
         Category, null=True, blank=True, on_delete=models.SET_NULL
     )

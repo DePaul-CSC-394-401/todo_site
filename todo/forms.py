@@ -6,7 +6,9 @@ class TodoForm(forms.ModelForm):
     class Meta:
         model = TodoItem
         exclude = ["user"]
-        widgets = {"due_date": forms.SelectDateWidget}
+        widgets = {
+            'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
 
 
 class CategoryForm(forms.ModelForm):
