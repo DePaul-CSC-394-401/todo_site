@@ -55,13 +55,11 @@ class TodoItem(models.Model):
     timer_started = models.BooleanField(default=False)
     objects = TodoQuerySet.as_manager()
 
-
     def update_total_time_spent(self):
         if self.start_time and self.end_time:
             self.total_time_spent += self.end_time - self.start_time
             self.start_time = None
             self.end_time = None
-
 
     @staticmethod
     def search_by(search_type, search_text, curr_user):

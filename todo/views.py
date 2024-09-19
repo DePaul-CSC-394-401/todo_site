@@ -167,6 +167,7 @@ def stop_todo_item(request, pk):
     td.save()
     return redirect("todo:todo_list")
 
+
 # def search_results(request):
 #     user = request.user
 #     search_text = request.GET.get("search_text")
