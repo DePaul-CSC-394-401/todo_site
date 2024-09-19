@@ -19,6 +19,10 @@ urlpatterns = [
     path("create-category/", views.create_category, name="create_category"),
     path("delete-category/<int:pk>/", views.delete_category, name="delete_category"),
     path("archive/<int:pk>/", views.archive, name="archive"),
-    path("view-archive", views.view_archive, name="view_archive"),
-    path("restore-from-archive/<int:pk>/", views.restore_from_archive, name="restore_from_archive"),
+    path("view-archive/", views.view_archive, name="view_archive"),
+    path(
+        "restore-from-archive/<int:pk>/",
+        views.restore_from_archive,
+        name="restore_from_archive",
+    ),
 ]

@@ -18,9 +18,7 @@ def create_todo_item(request):
     else:
         todo_form = TodoForm()
     return render(
-        request,
-        "todo/create-todo-item.html",
-        {"todo_form": todo_form, "user": user}
+        request, "todo/create-todo-item.html", {"todo_form": todo_form, "user": user}
     )
 
 
@@ -37,7 +35,11 @@ def todo_list(request):
         todo_items = todo_items.order_by_priority()
     if order_by == "due_date":
         todo_items = todo_items.order_by("due_date")
-    return render(request, "todo/todo-list.html", {"todo_items": todo_items, "categories": categories})
+    return render(
+        request,
+        "todo/todo-list.html",
+        {"todo_items": todo_items, "categories": categories},
+    )
 
 
 @login_required(login_url="user_profile:login")
@@ -119,6 +121,7 @@ def delete_category(request, pk):
     return redirect("todo:categories")
 
 
+@login_required(login_url="user_profile:login")
 def archive(request, pk):
     td = TodoItem.objects.get(id=pk)
     td.is_archived = True
@@ -130,7 +133,9 @@ def archive(request, pk):
 def view_archive(request):
     user = request.user
     archived_td_items = TodoItem.objects.filter(user=user).filter(is_archived=True)
-    return render(request, "todo/view_archive.html", {"archived_td_items": archived_td_items})
+    return render(
+        request, "todo/view_archive.html", {"archived_td_items": archived_td_items}
+    )
 
 
 @login_required(login_url="user_profile:login")
