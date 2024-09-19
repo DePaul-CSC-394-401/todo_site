@@ -3,6 +3,7 @@ from .models import TodoItem, Category
 from .forms import TodoForm, CategoryForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.utils import timezone
 
 
 @login_required(login_url="user_profile:login")
@@ -68,7 +69,9 @@ def edit_todo_item(request, pk):
     if request.method == "POST":
         todo_form = TodoForm(request.POST, instance=td_item)
         if todo_form.is_valid():
-            todo_form.save()
+            td_item = todo_form.save(commit=False)
+            td_item.update_total_time_spent()
+            td_item.save()
             return redirect("todo:todo_list")
     else:
         todo_form = TodoForm(instance=td_item)
@@ -145,6 +148,24 @@ def restore_from_archive(request, pk):
     td.save()
     return redirect("todo:view_archive")
 
+
+@login_required(login_url="user_profile:login")
+def start_todo_item(request, pk):
+    td = TodoItem.objects.get(id=pk)
+    td.start_time = timezone.now()
+    td.timer_started = True
+    td.save()
+    return redirect("todo:todo_list")
+
+
+@login_required(login_url="user_profile:login")
+def stop_todo_item(request, pk):
+    td = TodoItem.objects.get(id=pk)
+    td.end_time = timezone.now()
+    td.update_total_time_spent()
+    td.timer_started = False
+    td.save()
+    return redirect("todo:todo_list")
 
 # def search_results(request):
 #     user = request.user

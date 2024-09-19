@@ -25,4 +25,6 @@ urlpatterns = [
         views.restore_from_archive,
         name="restore_from_archive",
     ),
+    path("start-todo-item/<int:pk>/", views.start_todo_item, name="start_todo_item"),
+    path("stop-todo-item/<int:pk>/", views.stop_todo_item, name="stop_todo_item"),
 ]
