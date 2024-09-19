@@ -1,0 +1,15 @@
+{% extends "todo/base.html" %}
+{% block title %} Todo Categories {% endblock %}
+
+{% block content %}
+    <a href="{% url 'todo:create_category' %}">Create New Category</a>
+    {% if categories_list %}
+        <ul>
+            {% for category in categories_list %}
+                <li>{{ category }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Categories</p>
+    {% endif %}
+{% endblock %}

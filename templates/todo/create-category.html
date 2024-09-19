@@ -1,0 +1,11 @@
+{% extends 'todo/base.html' %}
+{% block title %} Create New Todo Category {% endblock %}
+
+{% block content %}
+    <h2>Create Todo Category</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

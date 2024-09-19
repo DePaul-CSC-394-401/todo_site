@@ -1,5 +1,5 @@
 from django import forms
-from .models import TodoItem
+from .models import TodoItem, Category
 
 
 class TodoForm(forms.ModelForm):
@@ -7,3 +7,9 @@ class TodoForm(forms.ModelForm):
         model = TodoItem
         exclude = ["user"]
         widgets = {"due_date": forms.SelectDateWidget}
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        exclude = ["user"]

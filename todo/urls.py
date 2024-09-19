@@ -15,4 +15,6 @@ urlpatterns = [
     path("delete-todo-item/<int:pk>", views.delete_todo_item, name="delete_todo_item"),
     path("mark-completed/<int:pk>/", views.mark_completed, name="mark_completed"),
     path("search-results/", views.search_results, name="search_results"),
+    path("categories/", views.categories, name="categories"),
+    path("create-category/", views.create_category, name="create_category"),
 ]

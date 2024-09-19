@@ -1,5 +1,4 @@
 data/*
 *.pyc
 venv/*
-add-td.txt
 .idea/*

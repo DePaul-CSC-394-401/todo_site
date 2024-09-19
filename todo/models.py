@@ -20,6 +20,17 @@ class TodoQuerySet(models.QuerySet):
         return self.alias().order_by("due_date")
 
 
+class Category(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+
 class TodoItem(models.Model):
 
     class Priority(models.TextChoices):
@@ -33,6 +44,7 @@ class TodoItem(models.Model):
     due_date = models.DateField()
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(choices=Priority.choices)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     objects = TodoQuerySet.as_manager()
 
     @staticmethod
@@ -44,4 +56,4 @@ class TodoItem(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date}, Is Completed: {self.is_completed}, Priority: {self.priority}"
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category}"
