@@ -1,5 +1,3 @@
-from turtledemo.penrose import start
-
 from django import forms
 from .models import TodoItem, Category
 
@@ -19,6 +17,15 @@ class TodoForm(forms.ModelForm):
             "due_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
             "start_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
             "end_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "progress": forms.TextInput(
+                attrs={
+                    "step": "1",
+                    "type": "range",
+                    "value": "50",
+                    "min": "0",
+                    "max": "100",
+                }
+            ),
         }
 
 

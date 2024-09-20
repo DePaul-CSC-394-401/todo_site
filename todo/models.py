@@ -53,13 +53,15 @@ class TodoItem(models.Model):
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     timer_started = models.BooleanField(default=False)
+    progress = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0, null=True, blank=True
+    )
     objects = TodoQuerySet.as_manager()
 
     def update_total_time_spent(self):
         if self.start_time and self.end_time:
             self.total_time_spent += self.end_time - self.start_time
-            self.start_time = None
-            self.end_time = None
+            self.start_time, self.end_time = None, None
 
     @staticmethod
     def search_by(search_type, search_text, curr_user):
@@ -70,4 +72,4 @@ class TodoItem(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%d/%m/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"
