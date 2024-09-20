@@ -1,8 +1,14 @@
 {% extends "user_profile/base.html" %}
-{% block title %}Logged Out Successfully{% endblock %}
+{% block title %}Logged Out{% endblock %}
+
 {% block content %}
-    <p>Logged Out Successfully.</p>
-    <p>
-        Click <a href="{% url 'user_profile:login' %}">here</a> to log back in
-    </p>
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+        <h2 class="text-2xl font-bold mb-6">Logged Out Successfully</h2>
+        <p class="text-gray-600 mb-4">You have been logged out successfully.</p>
+        <p>
+            Click <a href="{% url 'user_profile:login' %}" class="text-blue-500 hover:underline">here</a> to log back in.
+        </p>
+    </div>
+</div>
 {% endblock %}
