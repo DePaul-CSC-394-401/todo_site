@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "todo.apps.TodoConfig",
     "user_profile.apps.UserProfileConfig",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
