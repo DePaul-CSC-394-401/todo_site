@@ -19,14 +19,15 @@
             </th>
             <th>Description</th>
             <th>
-                <a href="?order_by=due_date">Due Date</a>
+                <a href="{% querystring order_by="due_date" %}">Due Date</a>
             </th>
             <th>Start</th>
             <th>Stop</th>
             <th>Time Spent</th>
             <th>Status</th>
+            <th>Progress</th>
             <th>
-                <a href="?order_by=priority_order">Priority</a>
+                <a href="{% querystring order_by="priority" %}">Priority</a>
             </th>
             <th>Edit</th>
             <th>Delete</th>
@@ -44,7 +45,8 @@
                             <td bgcolor = #8ACE00></td>
                             <td bgcolor = #8ACE00></td>
                             <td bgcolor = #8ACE00>{{ td.total_time_spent }}</td>
-                            <td bgcolor = #8ACE00>Completed</td>
+                            <td bgcolor = #8ACE00>Complete</td>
+                            <td bgcolor = #8ACE00></td>
                             <td bgcolor = #8ACE00>{{ td.get_priority_display|default:"" }}</td>
                             <td bgcolor = #8ACE00>
                                 <a href="{% url 'todo:edit_todo_item' td.id %}">Edit</a>
@@ -74,6 +76,7 @@
                             <td>
                                 <a href="{% url 'todo:mark_completed' td.id %}">Mark Complete</a>
                             </td>
+                            <td>{{ td.progress|floatformat:"0" }}%</td>
                             <td>{{ td.get_priority_display|default:"" }}</td>
                             <td>
                                 <a href="{% url 'todo:edit_todo_item' td.id %}">Edit</a>

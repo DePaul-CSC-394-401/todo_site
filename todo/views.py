@@ -27,12 +27,12 @@ def create_todo_item(request):
 def todo_list(request):
     user = request.user
     todo_items = TodoItem.objects.filter(user=user)
-    order_by = request.GET.get("order_by")
     filter_by_category = request.GET.get("filter-by-category")
+    order_by = request.GET.get("order_by")
     categories = Category.objects.filter(user=user)
     if filter_by_category:
         todo_items = todo_items.filter(category__name=filter_by_category)
-    if order_by == "priority_order":
+    if order_by == "priority":
         todo_items = todo_items.order_by_priority()
     if order_by == "due_date":
         todo_items = todo_items.order_by("due_date")
@@ -59,6 +59,7 @@ def search_results(request):
 def mark_completed(request, pk):
     td_item = TodoItem.objects.get(pk=pk)
     td_item.is_completed = True
+    td_item.progress = 100
     td_item.save()
     return redirect("todo:todo_list")
 
