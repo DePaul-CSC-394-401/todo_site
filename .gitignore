@@ -3,3 +3,4 @@ data/*
 venv/*
 .idea/*
 /create-todos.sh
+.DS_Store

@@ -1,0 +1,10 @@
+{% extends "teams/base.html" %}
+{% block title %}Create Todo List{% endblock %}
+{% block content %}
+    <h2>Create Todo List</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

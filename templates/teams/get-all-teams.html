@@ -1,0 +1,25 @@
+{% extends "teams/base.html" %}
+{% block title %}All Teams{% endblock %}
+{% block content %}
+    <a href="{% url 'teams:create_team' %}">Create New Team</a>
+    {% if teams_list %}
+        <table>
+            <tr>
+                <th>Team Name</th>
+                <th>Delete Team</th>
+            </tr>
+            {% for team in teams_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'teams:get_team' team.id %}">{{ team.name }}</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'teams:delete_team_confirmation' team.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Teams.</p>
+    {% endif %}
+{% endblock %}

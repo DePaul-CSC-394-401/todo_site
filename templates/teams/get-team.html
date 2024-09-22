@@ -1,0 +1,44 @@
+{% extends "teams/base.html" %}
+{% block title %}Team{% endblock %}
+{% block content %}
+    <h1>{{ team.name }}</h1>
+    <h2>
+        Description: {{ team.description }} <a href="{% url 'teams:edit_team' team.id %}"></a>
+    </h2>
+    <a href="{% url 'teams:create_todo_list' team.id %}">Create Shared Todo List</a>
+    {% if todo_dict %}
+        {% for todo_list, todo_items in todo_dict.items %}
+            <h3>{{ todo_list.name }}</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'teams:edit_todo_list' todo_list.id %}">Edit</a>
+                </li>
+                <li>
+                    <a href="{% url 'teams:delete_list_confirmation' team.id todo_list.id %}">Delete</a>
+                </li>
+            </ul>
+            {% if todo_items %}
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Due Date</th>
+                        <th>Assigned To</th>
+                    </tr>
+                    {% for td in todo_items %}
+                        <tr>
+                            <td>{{ td.title }}</td>
+                            <td>{{ td.description }}</td>
+                            <td>{{ td.due_date }}</td>
+                            <td>{{ td.assigned_to|default_if_none:"No team member assigned." }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                No Todo Items in this shared list.
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No Shared Todo Lists.</p>
+    {% endif %}
+{% endblock %}

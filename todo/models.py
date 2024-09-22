@@ -5,6 +5,8 @@ from django.db.models import Case, Value, When
 from django.contrib.postgres.search import SearchVector
 from datetime import timedelta
 
+from teams.models import Team
+
 
 # Create your models here.
 class TodoQuerySet(models.QuerySet):
@@ -70,6 +72,28 @@ class TodoItem(models.Model):
             .annotate(search=SearchVector(search_type))
             .filter(search=search_text)
         )
+
+    def __str__(self) -> str:
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"
+
+class SharedTodoList(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class SharedTodoItem(models.Model):
+
+    assigned_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=300)
+    due_date = models.DateTimeField()
+    is_completed = models.BooleanField(default=False)
+    shared_todo_list = models.ForeignKey(SharedTodoList, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"

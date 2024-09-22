@@ -1,16 +1,13 @@
 {% extends "user_profile/base.html" %}
-{% load widget_tweaks %}
-
 {% block title %}Register{% endblock %}
-
 {% block content %}
     {% if activation_message %}
         <p>Activation Message</p>
     {% else %}
-        <form method="post" class="space-y-4">
+        <form method="post">
             {% csrf_token %}
-            {{ form.as_p}}
-            <input type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300" value="Register">
+            {{ form.as_p }}
+            <input type="submit" value="Register">
         </form>
     {% endif %}
 {% endblock %}
