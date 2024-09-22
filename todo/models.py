@@ -74,7 +74,7 @@ class TodoItem(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}"
 
 class SharedTodoList(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
@@ -96,4 +96,4 @@ class SharedTodoItem(models.Model):
     shared_todo_list = models.ForeignKey(SharedTodoList, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}"

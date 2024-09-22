@@ -2,6 +2,11 @@
 {% block title %}Edit Todo List{% endblock %}
 {% block content %}
     <h1>{{ todo_list.name }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ todo_list_form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
     <a href="{% url 'teams:create_todo_item' todo_list.id %}">Add Todo Item</a>
     {% if todo_items %}
         <table>
