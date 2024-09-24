@@ -1,19 +1,33 @@
 from django import forms
-from .models import TodoItem, Category, TodoList
+
+from teams.models import Team, TodoList, TeamInvite
+from todo.models import TodoItem
 
 
-class TodoForm(forms.ModelForm):
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = "__all__"
+
+
+class TodoListForm(forms.ModelForm):
+    class Meta:
+        model = TodoList
+        exclude = ["team"]
+
+
+class TeamTodoForm(forms.ModelForm):
     class Meta:
         model = TodoItem
         exclude = [
             "user",
+            "todo_list",
             "timer_started",
             "start_time",
             "end_time",
             "is_archived",
             "total_time_spent",
-            "todo_list",
-            "assigned_to",
+            "category",
         ]
         widgets = {
             "due_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
@@ -29,7 +43,7 @@ class TodoForm(forms.ModelForm):
         }
 
 
-class CategoryForm(forms.ModelForm):
+class SendInviteForm(forms.ModelForm):
     class Meta:
-        model = Category
-        exclude = ["user"]
+        model = TeamInvite
+        exclude = ["team", "accepted", "sender"]

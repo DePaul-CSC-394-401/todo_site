@@ -1,0 +1,10 @@
+{% extends "teams/base.html" %}
+{% block title %}Invites{% endblock %}
+{% block content %}
+    {% for invite in invites %}
+        <p>
+            Invite to: {{ invite.team.name }} from: {{ invite.sender.username }}. Click <a href="{% url 'teams:accept-invite' invite.id %}">Here</a> to accept.
+        {% empty %}
+            <p>No invites</p>
+        {% endfor %}
+    {% endblock %}

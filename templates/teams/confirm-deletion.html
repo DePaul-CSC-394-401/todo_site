@@ -1,0 +1,12 @@
+{% extends "teams/base.html" %}
+{% block title %}Confirm Deletion{% endblock %}
+{% block content %}
+    {% if delete_team %}
+        <a href="{% url 'teams:delete_team' team_id %}">Confirm Deletion</a>
+        <a href="{% url 'teams:get_teams' %}">Cancel</a>
+    {% endif %}
+    {% if delete_todo_list %}
+        <a href="{% url 'teams:delete_todo_list' team_id todo_list_id %}">Confirm Deletion</a>
+        <a href="{% url 'teams:get_team' team_id %}">Cancel</a>
+    {% endif %}
+{% endblock %}

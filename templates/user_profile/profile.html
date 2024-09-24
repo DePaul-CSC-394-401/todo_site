@@ -1,36 +1,36 @@
 {% extends "user_profile/base.html" %}
 {% block title %}Profile{% endblock %}
 {% load widget_tweaks %}
-
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center">Welcome, {{ user.username }}</h2>
-        {% if updated %}
-            <p class="text-green-600 mb-4 text-center">Profile Successfully Updated.</p>
-        {% endif %}
-        
-        <form method="POST" class="space-y-4">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ profile_form.username.label_tag }}
-                {{ profile_form.username|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">Welcome, {{ user.username }}</h2>
+            {% if updated %}<p class="text-green-600 mb-4 text-center">Profile Successfully Updated.</p>{% endif %}
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ profile_form.username.label_tag }}
+                    {{ profile_form.username|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                </div>
+                <div class="form-group">
+                    {{ profile_form.email.label_tag }}
+                    {{ profile_form.email|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                </div>
+                <button type="submit"
+                        class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+                    Update
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <a href="{% url 'user_profile:reset_password' %}"
+                   class="text-blue-500 hover:underline">Reset Password</a>
             </div>
-            <div class="form-group">
-                {{ profile_form.email.label_tag }}
-                {{ profile_form.email|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+            <div class="flex justify-center mt-4 space-x-4">
+                <a href="{% url 'todo:todo_list' %}"
+                   class="text-gray-600 hover:underline">View Todo List</a>
+                <a href="{% url 'user_profile:logout' %}"
+                   class="text-gray-600 hover:underline">Logout</a>
             </div>
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">Update</button>
-        </form>
-
-        <div class="text-center mt-4">
-            <a href="{% url 'user_profile:reset_password' %}" class="text-blue-500 hover:underline">Reset Password</a>
-        </div>
-        
-        <div class="flex justify-center mt-4 space-x-4">
-            <a href="{% url 'todo:todo_list' %}" class="text-gray-600 hover:underline">View Todo List</a>
-            <a href="{% url 'user_profile:logout' %}" class="text-gray-600 hover:underline">Logout</a>
         </div>
     </div>
-</div>
 {% endblock %}

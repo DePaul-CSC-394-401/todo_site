@@ -5,6 +5,8 @@ from django.db.models import Case, Value, When
 from django.contrib.postgres.search import SearchVector
 from datetime import timedelta
 
+from teams.models import Team, TodoList
+
 
 # Create your models here.
 class TodoQuerySet(models.QuerySet):
@@ -39,7 +41,9 @@ class TodoItem(models.Model):
         MEDIUM = "MEDIUM", _("Medium")
         LOW = "LOW", _("Low")
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
+    )
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     due_date = models.DateTimeField()
@@ -55,6 +59,16 @@ class TodoItem(models.Model):
     timer_started = models.BooleanField(default=False)
     progress = models.DecimalField(
         max_digits=5, decimal_places=2, default=0, null=True, blank=True
+    )
+    todo_list = models.ForeignKey(
+        TodoList, on_delete=models.CASCADE, null=True, blank=True
+    )
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_to",
     )
     objects = TodoQuerySet.as_manager()
 
@@ -72,4 +86,4 @@ class TodoItem(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}, Priority: {self.priority}, Category: {self.category.name}, Total Time Spent: {self.total_time_spent}"
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}"

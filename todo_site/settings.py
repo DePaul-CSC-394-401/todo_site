@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-tt+_g7_a5)_67vsrej@bpnovlp80+%dc%uw#2k4)mtc=vh#im6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "todo.apps.TodoConfig",
     "user_profile.apps.UserProfileConfig",
+    "teams.apps.TeamsConfig",
     "widget_tweaks",
 ]
 
@@ -130,6 +131,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "user_profile.CustomUser"
 
 
 EMAIL_BACKEND = (

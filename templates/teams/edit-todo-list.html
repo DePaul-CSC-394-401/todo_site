@@ -1,0 +1,39 @@
+{% extends "teams/base.html" %}
+{% block title %}Edit Todo List{% endblock %}
+{% block content %}
+    <h1>{{ todo_list.name }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ todo_list_form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{% url 'teams:create_todo_item' todo_list.id %}">Add Todo Item</a>
+    {% if todo_items %}
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Due Date</th>
+                <th>Assigned To</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for td in todo_items %}
+                <tr>
+                    <td>{{ td.title }}</td>
+                    <td>{{ td.description }}</td>
+                    <td>{{ td.due_date }}</td>
+                    <td>{{ td.assigned_to|default_if_none:"No team member assigned." }}</td>
+                    <td>
+                        <a href="{% url 'teams:edit_todo_item' todo_list.id td.id %}">EDIT</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'teams:delete_todo_item' todo_list.id td.id %}">DELETE</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Todo Items in this shared list.</p>
+    {% endif %}
+{% endblock %}
