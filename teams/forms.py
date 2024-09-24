@@ -1,15 +1,7 @@
 from django import forms
 
-from teams.models import Team
-from todo.models import SharedTodoList, SharedTodoItem
-
-
-# class CreateTodoListForm(forms.Form):
-#     list_name = forms.CharField(required=True, max_length=100)
-#     list_description = forms.CharField(required=True, max_length=100)
-#     td_title = forms.CharField(required=False, max_length=100)
-#     td_description = forms.CharField(required=False, max_length=100)
-#     td_due_date = forms.DateTimeField(required=False)
+from teams.models import Team, TodoList, TeamInvite
+from todo.models import TodoItem
 
 
 class TeamForm(forms.ModelForm):
@@ -18,23 +10,40 @@ class TeamForm(forms.ModelForm):
         fields = "__all__"
 
 
-class SharedListForm(forms.ModelForm):
+class TodoListForm(forms.ModelForm):
     class Meta:
-        model = SharedTodoList
+        model = TodoList
         exclude = ["team"]
 
 
-class SharedTodoItemForm(forms.ModelForm):
+class TeamTodoForm(forms.ModelForm):
     class Meta:
-        model = SharedTodoItem
+        model = TodoItem
         exclude = [
-            "assigned_user",
-            "is_archived",
-            "total_time_spent",
+            "user",
+            "todo_list",
+            "timer_started",
             "start_time",
             "end_time",
-            "timer_started",
-            "progress",
-            "shared_todo_list",
+            "is_archived",
+            "total_time_spent",
+            "category",
         ]
-        widgets = {"due_date": forms.DateTimeInput(attrs={"type": "datetime-local"})}
+        widgets = {
+            "due_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "progress": forms.TextInput(
+                attrs={
+                    "step": "1",
+                    "type": "range",
+                    "value": "50",
+                    "min": "0",
+                    "max": "100",
+                }
+            ),
+        }
+
+
+class SendInviteForm(forms.ModelForm):
+    class Meta:
+        model = TeamInvite
+        exclude = ["team", "accepted", "sender"]

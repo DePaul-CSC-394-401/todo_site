@@ -2,6 +2,12 @@
 {% block title %}Team{% endblock %}
 {% block content %}
     <h1>{{ team.name }}</h1>
+    <p>Send Invite</p>
+    <form method="POST">
+        {% csrf_token %}
+        {{ invite_form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
     <h2>
         Description: {{ team.description }} <a href="{% url 'teams:edit_team' team.id %}"></a>
     </h2>

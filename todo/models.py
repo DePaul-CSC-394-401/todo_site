@@ -5,7 +5,7 @@ from django.db.models import Case, Value, When
 from django.contrib.postgres.search import SearchVector
 from datetime import timedelta
 
-from teams.models import Team
+from teams.models import Team, TodoList
 
 
 # Create your models here.
@@ -41,7 +41,9 @@ class TodoItem(models.Model):
         MEDIUM = "MEDIUM", _("Medium")
         LOW = "LOW", _("Low")
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
+    )
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     due_date = models.DateTimeField()
@@ -58,6 +60,16 @@ class TodoItem(models.Model):
     progress = models.DecimalField(
         max_digits=5, decimal_places=2, default=0, null=True, blank=True
     )
+    todo_list = models.ForeignKey(
+        TodoList, on_delete=models.CASCADE, null=True, blank=True
+    )
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_to",
+    )
     objects = TodoQuerySet.as_manager()
 
     def update_total_time_spent(self):
@@ -72,28 +84,6 @@ class TodoItem(models.Model):
             .annotate(search=SearchVector(search_type))
             .filter(search=search_text)
         )
-
-    def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}"
-
-class SharedTodoList(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class SharedTodoItem(models.Model):
-
-    assigned_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
-    )
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=300)
-    due_date = models.DateTimeField()
-    is_completed = models.BooleanField(default=False)
-    shared_todo_list = models.ForeignKey(SharedTodoList, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}"

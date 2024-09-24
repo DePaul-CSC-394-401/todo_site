@@ -49,4 +49,6 @@ urlpatterns = [
         views.delete_todo_item,
         name="delete_todo_item",
     ),
+    path("invites/", views.invites, name="invites"),
+    path("accept-invite/<int:invite_id>/", views.accept_invite, name="accept-invite"),
 ]

@@ -1,5 +1,5 @@
 from django import forms
-from .models import TodoItem, Category
+from .models import TodoItem, Category, TodoList
 
 
 class TodoForm(forms.ModelForm):
@@ -12,11 +12,11 @@ class TodoForm(forms.ModelForm):
             "end_time",
             "is_archived",
             "total_time_spent",
+            "todo_list",
+            "assigned_to",
         ]
         widgets = {
             "due_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
-            "start_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
-            "end_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
             "progress": forms.TextInput(
                 attrs={
                     "step": "1",
