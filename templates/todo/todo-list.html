@@ -4,83 +4,112 @@
 
 {% block content %}
     <!-- Page Title -->
-    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Todo Items</h2> <!-- Centered page title with text formatting -->
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Todo Items</h2> <!-- Centered page title with text formatting-->
+
+    <!-- Filter by Category -->
+    <form id="category-filter-form" method="GET" class="mb-6 flex justify-start">
+        <label for="filter-by-category" class="mr-2">Category:</label>
+        <select name="filter-by-category"
+                id="filter-by-category"
+                onchange="this.form.submit()"
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" selected disabled>Select A Category</option>
+            {% for category in categories %}
+                <option value="{{ category.name }}">{{ category.name }}</option>
+            {% endfor %}
+            <option value="">Show all</option>
+        </select>
+    </form>
 
     <!-- Responsive Table Container -->
     <div class="overflow-x-auto"> <!-- Makes the table horizontally scrollable on small screens -->
-        <table class="min-w-full table-auto border-collapse"> <!-- Full-width table with auto column sizing -->
-            
-            <!-- Table Header -->
+        <table class="min-w-full table-auto border-collapse"> <!-- Full-width table with auto column sizing-->
             <thead class="bg-gray-100 border-b-2 border-gray-200"> <!-- Light gray background for the header with bottom border -->
                 <tr>
                     <!-- Header Columns -->
                     <th class="text-left px-6 py-3">Title</th>
                     <th class="text-left px-6 py-3">Category</th>
                     <th class="text-left px-6 py-3">Description</th>
-                    <th class="text-left px-6 py-3">Due Date</th>
+                    <th class="text-left px-6 py-3">
+                        <a href="{% querystring order_by='due_date' %}" class="text-blue-500 hover:underline">Due Date</a>
+                    </th>
                     <th class="text-left px-6 py-3">Start</th>
                     <th class="text-left px-6 py-3">Stop</th>
                     <th class="text-left px-6 py-3">Time Spent</th>
                     <th class="text-left px-6 py-3">Status</th>
                     <th class="text-left px-6 py-3">Progress</th>
-                    <th class="text-left px-6 py-3">Priority</th>
+                    <th class="text-left px-6 py-3">
+                        <a href="{% querystring order_by='priority' %}" class="text-blue-500 hover:underline">Priority</a>
+                    </th>
                     <th class="text-left px-6 py-3">Edit</th>
                     <th class="text-left px-6 py-3">Delete</th>
                     <th class="text-left px-6 py-3">Archive</th>
                 </tr>
             </thead>
-            
             <!-- Table Body -->
             <tbody>
                 {% if todo_items %}
                     <!-- Loop through each Todo item -->
                     {% for td in todo_items %}
-                        <!-- Row Styling: White background with bottom border -->
+                        <!-- Row Styling: White background wiht bottom border -->
                         <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> <!-- Green background if item is completed -->
                             <!-- Data Columns -->
                             <td class="px-6 py-4">{{ td.title }}</td>
                             <td class="px-6 py-4">{{ td.category.name|default:"" }}</td>
                             <td class="px-6 py-4">{{ td.description }}</td>
                             <td class="px-6 py-4">{{ td.due_date }}</td>
-                            
-                            <!-- Start Button or Timer -->
+
+                            <!-- Start Button or Timer Running -->
                             <td class="px-6 py-4">
-                                {% if not td.is_completed %}
-                                    <a href="{% url 'todo:start_todo_item' td.id %}" class="text-blue-500 hover:underline">Start</a> <!-- Start link with hover effect -->
-                                {% else %}
+                                {% if td.timer_started %}
                                     Timer Running
+                                {% else %}
+                                    <a href="{% url 'todo:start_todo_item' td.id %}" class="text-blue-500 hover:underline">Start</a> <!-- Start link with hover effect-->
                                 {% endif %}
                             </td>
 
                             <!-- Stop Button -->
                             <td class="px-6 py-4">
-                                <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-blue-500 hover:underline">Stop</a> <!-- Stop link with hover effect -->
+                                {% if td.timer_started %}
+                                    <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-blue-500 hover:underline">Stop</a> <!-- Stop link with hover effect-->
+                                {% else %}
+                                    Timer Stopped
+                                {% endif %}
                             </td>
 
-                            <!-- Other Fields -->
+                            <!-- Time Spent -->
                             <td class="px-6 py-4">{{ td.total_time_spent }}</td>
-                            <td class="px-6 py-4">{{ td.get_status_display|default:"" }}</td>
+
+                            <!-- Status Complete or Mark Complete -->
+                            <td class="px-6 py-4">
+                                {% if td.is_completed %}
+                                    <span class="text-green-500">Complete</span>
+                                {% else %}
+                                    <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">Mark Complete</a>
+                                {% endif %}
+                            </td>
+
+                            <!-- Progress and Priority -->
                             <td class="px-6 py-4">{{ td.progress|floatformat:"0" }}%</td>
                             <td class="px-6 py-4">{{ td.get_priority_display|default:"" }}</td>
-                            
+
                             <!-- Edit Button -->
                             <td class="px-6 py-4">
-                                <a href="{% url 'todo:edit_todo_item' td.id %}" class="text-blue-500 hover:underline">Edit</a> <!-- Edit link with hover effect -->
+                                <a href="{% url 'todo:edit_todo_item' td.id %}" class="text-blue-500 hover:underline">Edit</a> <!-- Edit link with hover effect-->
                             </td>
 
                             <!-- Delete Button -->
                             <td class="px-6 py-4">
-                                <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red -->
+                                <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red-->
                             </td>
-
+                            
                             <!-- Archive Button -->
                             <td class="px-6 py-4">
-                                <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect -->
+                                <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
                             </td>
                         </tr>
                     {% endfor %}
                 {% else %}
-                    <!-- No items found -->
                     <tr>
                         <td colspan="13" class="text-center py-4 text-gray-500">No todo items found</td> <!-- Spans all columns if no items are found -->
                     </tr>
