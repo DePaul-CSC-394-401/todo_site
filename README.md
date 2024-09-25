@@ -13,3 +13,10 @@ After making changes to project:
 1. python manage.py makemigrations
 2. docker compose up
 3. docker compose exec web python manage.py migrate
+
+Issues with Dockerization? Try a health status check:
+-  System Status --> docker info
+-  Container rsource utilization --> docker stats
+-  List running containers --> docker compose ps
+-  View a container log --> docker inspect <container_id>
+-  Inspect a container --> docker inspect <container_id>
