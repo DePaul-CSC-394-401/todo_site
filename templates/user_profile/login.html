@@ -19,6 +19,11 @@
                         class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
                     Log In
                 </button>
+                <div> 
+                    {% if messages %}
+                        {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+                    {% endif %}
+                </div>
             </form>
             <p class="text-center mt-4">
                 Don't have an account? <a href="{% url 'user_profile:register' %}"

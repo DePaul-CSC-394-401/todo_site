@@ -27,6 +27,9 @@ from django.contrib.auth.tokens import (
     default_token_generator as token_generator,
 )
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+from .models import CustomUser
 
 
 # Create your views here.
@@ -76,8 +79,8 @@ def register(request):
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))  # Decode the user id
-        user = User.objects.get(pk=uid)  # Get the user
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = CustomUser.objects.get(pk=uid)  # Get the user
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
 
     if user is not None and token_generator.check_token(user, token):  # Check the token
@@ -103,6 +106,9 @@ def login(request):
             if user is not None:
                 auth_login(request, user)
                 return redirect("todo:todo_list")
+        else:
+            messages.error(request, "Invalid username or password.")
+
     else:
         form = AuthenticationForm()
     return render(request, "user_profile/login.html", {"form": form})
