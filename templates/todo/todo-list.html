@@ -51,6 +51,9 @@
                 {% if todo_items %}
                     <!-- Loop through each Todo item -->
                     {% for td in todo_items %}
+                        <!--Start check for archived items -->
+                        {% if not td.is_archived %}
+
                         <!-- Row Styling: White background wiht bottom border -->
                         <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> <!-- Green background if item is completed -->
                             <!-- Data Columns -->
@@ -108,6 +111,8 @@
                                 <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
                             </td>
                         </tr>
+
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                     <tr>
