@@ -71,7 +71,7 @@
                             <!-- Stop Button -->
                             <td class="px-6 py-4">
                                 {% if td.timer_started %}
-                                    <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-blue-500 hover:underline">Stop</a> <!-- Stop link with hover effect-->
+                                    <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-red-500 hover:underline">Stop</a> <!-- Stop link with hover effect-->
                                 {% else %}
                                     Timer Stopped
                                 {% endif %}
@@ -102,7 +102,7 @@
                             <td class="px-6 py-4">
                                 <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red-->
                             </td>
-                            
+
                             <!-- Archive Button -->
                             <td class="px-6 py-4">
                                 <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
