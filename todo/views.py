@@ -26,7 +26,7 @@ def create_todo_item(request):
 @login_required(login_url="user_profile:login")
 def todo_list(request):
     user = request.user
-    todo_items = TodoItem.objects.filter(user=user)
+    todo_items = TodoItem.objects.filter(user=user).order_by("due_date")
     filter_by_category = request.GET.get("filter-by-category")
     order_by = request.GET.get("order_by")
     categories = Category.objects.filter(user=user)
