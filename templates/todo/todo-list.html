@@ -51,63 +51,65 @@
                 {% if todo_items %}
                     <!-- Loop through each Todo item -->
                     {% for td in todo_items %}
-                        <!-- Row Styling: White background wiht bottom border -->
-                        <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> <!-- Green background if item is completed -->
-                            <!-- Data Columns -->
-                            <td class="px-6 py-4">{{ td.title }}</td>
-                            <td class="px-6 py-4">{{ td.category.name|default:"" }}</td>
-                            <td class="px-6 py-4">{{ td.description }}</td>
-                            <td class="px-6 py-4">{{ td.due_date }}</td>
-
-                            <!-- Start Button or Timer Running -->
-                            <td class="px-6 py-4">
-                                {% if td.timer_started %}
-                                    Timer Running
-                                {% else %}
-                                    <a href="{% url 'todo:start_todo_item' td.id %}" class="text-blue-500 hover:underline">Start</a> <!-- Start link with hover effect-->
-                                {% endif %}
-                            </td>
-
-                            <!-- Stop Button -->
-                            <td class="px-6 py-4">
-                                {% if td.timer_started %}
-                                    <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-red-500 hover:underline">Stop</a> <!-- Stop link with hover effect-->
-                                {% else %}
-                                    Timer Stopped
-                                {% endif %}
-                            </td>
-
-                            <!-- Time Spent -->
-                            <td class="px-6 py-4">{{ td.total_time_spent }}</td>
-
-                            <!-- Status Complete or Mark Complete -->
-                            <td class="px-6 py-4">
-                                {% if td.is_completed %}
-                                    <span class="text-green-500">Complete</span>
-                                {% else %}
-                                    <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">Mark Complete</a>
-                                {% endif %}
-                            </td>
-
-                            <!-- Progress and Priority -->
-                            <td class="px-6 py-4">{{ td.progress|floatformat:"0" }}%</td>
-                            <td class="px-6 py-4">{{ td.get_priority_display|default:"" }}</td>
-
-                            <!-- Edit Button -->
-                            <td class="px-6 py-4">
-                                <a href="{% url 'todo:edit_todo_item' td.id %}" class="text-blue-500 hover:underline">Edit</a> <!-- Edit link with hover effect-->
-                            </td>
-
-                            <!-- Delete Button -->
-                            <td class="px-6 py-4">
-                                <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red-->
-                            </td>
-
-                            <!-- Archive Button -->
-                            <td class="px-6 py-4">
-                                <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
-                            </td>
-                        </tr>
+                        {% if not td.is_archived %}
+                            <!-- Row Styling: White background wiht bottom border -->
+                            <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> <!-- Green background if item is completed -->
+                                <!-- Data Columns -->
+                                <td class="px-6 py-4">{{ td.title }}</td>
+                                <td class="px-6 py-4">{{ td.category.name|default:"" }}</td>
+                                <td class="px-6 py-4">{{ td.description }}</td>
+                                <td class="px-6 py-4">{{ td.due_date }}</td>
+    
+                                <!-- Start Button or Timer Running -->
+                                <td class="px-6 py-4">
+                                    {% if td.timer_started %}
+                                        Timer Running
+                                    {% else %}
+                                        <a href="{% url 'todo:start_todo_item' td.id %}" class="text-blue-500 hover:underline">Start</a> <!-- Start link with hover effect-->
+                                    {% endif %}
+                                </td>
+    
+                                <!-- Stop Button -->
+                                <td class="px-6 py-4">
+                                    {% if td.timer_started %}
+                                        <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-red-500 hover:underline">Stop</a> <!-- Stop link with hover effect-->
+                                    {% else %}
+                                        Timer Stopped
+                                    {% endif %}
+                                </td>
+    
+                                <!-- Time Spent -->
+                                <td class="px-6 py-4">{{ td.total_time_spent }}</td>
+    
+                                <!-- Status Complete or Mark Complete -->
+                                <td class="px-6 py-4">
+                                    {% if td.is_completed %}
+                                        <span class="text-green-500">Complete</span>
+                                    {% else %}
+                                        <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">Mark Complete</a>
+                                    {% endif %}
+                                </td>
+    
+                                <!-- Progress and Priority -->
+                                <td class="px-6 py-4">{{ td.progress|floatformat:"0" }}%</td>
+                                <td class="px-6 py-4">{{ td.get_priority_display|default:"" }}</td>
+    
+                                <!-- Edit Button -->
+                                <td class="px-6 py-4">
+                                    <a href="{% url 'todo:edit_todo_item' td.id %}" class="text-blue-500 hover:underline">Edit</a> <!-- Edit link with hover effect-->
+                                </td>
+    
+                                <!-- Delete Button -->
+                                <td class="px-6 py-4">
+                                    <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red-->
+                                </td>
+    
+                                <!-- Archive Button -->
+                                <td class="px-6 py-4">
+                                    <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                     <tr>
