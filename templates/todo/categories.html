@@ -1,16 +1,28 @@
 {% extends "todo/base.html" %}
+
 {% block title %}Todo Categories{% endblock %}
+
 {% block content %}
-    <a href="{% url 'todo:create_category' %}">Create New Category</a>
+    <!-- Page Title -->
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Todo Categories</h2> <!-- Centered page title -->
+
+    <!-- Create New Category Button -->
+    <div class="text-center mb-6"> <!-- Center the button with margin bottom -->
+        <a href="{% url 'todo:create_category' %}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">Create New Category</a> <!-- Button with hover effect -->
+    </div>
+
+    <!-- Categories List -->
     {% if categories_list %}
-        <ul>
+        <ul class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6"> <!-- Centered list container with padding and shadow -->
             {% for category in categories_list %}
-                <li>
-                    {{ category }}  <a href="{% url 'todo:delete_category' category.id %}">Delete</a>
+                <li class="flex justify-between items-center border-b py-4"> <!-- Flexbox for aligning text and button, with bottom border and padding -->
+                    <span class="text-lg font-medium text-gray-700">{{ category }}</span> <!-- Display the category name -->
+                    <a href="{% url 'todo:delete_category' category.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect -->
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No Categories</p>
+        <!-- No Categories Found Message -->
+        <p class="text-center text-gray-500">No Categories</p> <!-- Centered message with gray text -->
     {% endif %}
 {% endblock %}

@@ -1,7 +1,24 @@
 {% extends "todo/base.html" %}
+
 {% block title %}Deletion Confirmation{% endblock %}
+
 {% block content %}
-    <h2>Confirm Deletion</h2>
-    <a href="{% url 'todo:delete_todo_item' td_item.id %}">Confirm Deletion</a>
-    <a href="{% url 'todo:todo_list' %}">Cancel</a>
+    <!-- Page Title -->
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Confirm Deletion</h2> <!-- Centered title with spacing -->
+
+    <!-- Confirmation Message -->
+    <p class="text-center text-gray-600 mb-6">Are you sure you want to delete this Todo item?</p> <!-- Centered message -->
+
+    <!-- Buttons Container -->
+    <div class="flex justify-center space-x-4"> <!-- Centered flexbox container for buttons with spacing between them -->
+        <!-- Confirm Deletion Button -->
+        <a href="{% url 'todo:delete_todo_item' td_item.id %}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+            Confirm Deletion
+        </a>
+
+        <!-- Cancel Button -->
+        <a href="{% url 'todo:todo_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
+            Cancel
+        </a>
+    </div>
 {% endblock %}

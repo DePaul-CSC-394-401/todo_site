@@ -1,10 +1,24 @@
 {% extends 'todo/base.html' %}
+{% load widget_tweaks %}
 {% block title %}Create New Todo Category{% endblock %}
+
 {% block content %}
-    <h2>Create Todo Category</h2>
-    <form method="POST">
+    <!-- Page Title -->
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Create Todo Category</h2> <!-- Centered page title -->
+
+    <!-- Form for Creating New Category -->
+    <form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"> <!-- Centered form with padding, border, and shadow -->
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
+
+        <!-- Category Name Field -->
+        <div class="mb-4">
+            <label for="name" class="block font-medium text-gray-700">Category Name:</label>
+            <div class="border border-gray-300 rounded-lg p-2 w-full"> <!-- Full-width container for the input field -->
+                {{ form.name|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width select field with focus styling -->
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"> <!-- Full-width submit button with hover effect -->
     </form>
 {% endblock %}

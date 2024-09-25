@@ -85,7 +85,7 @@
                                 {% if td.is_completed %}
                                     <span class="text-green-500">Complete</span>
                                 {% else %}
-                                    <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">Mark Complete</a>
+                                    <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">In Progress Click to Mark Complete</a>
                                 {% endif %}
                             </td>
 

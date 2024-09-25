@@ -1,16 +1,37 @@
 {% extends "todo/base.html" %}
+
 {% block title %}Archive{% endblock %}
+
 {% block content %}
-    <h2>Archive</h2>
+    <!-- Page Title -->
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Archive</h2> <!-- Centered page title -->
+
+    <!-- Check if there are archived Todo items -->
     {% if archived_td_items %}
-        <ul>
+        <!-- List of Archived Todo Items -->
+        <ul class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"> <!-- Centered list with spacing between items -->
             {% for td in archived_td_items %}
-                <li>
-                    {{ td }}    <a href="{% url 'todo:restore_from_archive' td.id %}">Restore</a>
+                <li class="p-4 bg-gray-50 rounded-lg shadow-md border border-gray-200"> <!-- Container for each archived item -->
+                    <div class="mb-2">
+                        <span class="font-semibold text-gray-700">Title:</span> {{ td.title }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-semibold text-gray-700">Description:</span> {{ td.description }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-semibold text-gray-700">Due Date:</span> {{ td.due_date|date:"M d, Y, g:i a" }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-semibold text-gray-700">Completed:</span> {% if td.is_completed %} Yes {% else %} No {% endif %}
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{% url 'todo:restore_from_archive' td.id %}" class="text-blue-500 hover:underline">Restore</a>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No Todo items in Archive</p>
+        <!-- No archived Todo items message -->
+        <p class="text-center text-gray-500">No Todo items in Archive</p> <!-- Centered message with gray color -->
     {% endif %}
 {% endblock %}
