@@ -15,6 +15,11 @@
             <label for="title" class="block font-medium text-gray-700">Title:</label>
             <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the input field -->
                 {{ todo_form.title|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width input field with focus styling -->
+                {% if todo_form.title.errors %}
+                        <div class="text-red-500 mt-2 text-sm">
+                            {{ todo_form.title.errors }}
+                        </div>
+                    {% endif %}
             </div>
         </div>
 
@@ -23,6 +28,11 @@
             <label for="description" class="block font-medium text-gray-700">Description:</label>
             <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the input field -->
                 {{ todo_form.description|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width input field with focus styling -->
+                {% if todo_form.description.errors %}
+                        <div class="text-red-500 mt-2 text-sm">
+                            {{ todo_form.description.errors }}
+                        </div>
+                    {% endif %}
             </div>
         </div>
 
@@ -31,6 +41,11 @@
             <label for="due_date" class="block font-medium text-gray-700">Due Date:</label>
             <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the input field -->
                 {{ todo_form.due_date|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width input field with focus styling -->
+                {% if todo_form.due_date.errors %}
+                        <div class="text-red-500 mt-2 text-sm">
+                            {{ todo_form.due_date.errors }}
+                        </div>
+                    {% endif %}
             </div>
         </div>
 
