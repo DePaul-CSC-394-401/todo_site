@@ -2,5 +2,4 @@ data/*
 *.pyc
 venv/*
 .idea/*
-/setup.sh
 .DS_Store
