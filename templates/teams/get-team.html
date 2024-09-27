@@ -1,50 +1,76 @@
 {% extends "teams/base.html" %}
 {% block title %}Team{% endblock %}
 {% block content %}
-    <h1>{{ team.name }}</h1>
-    <p>Send Invite</p>
-    <form method="POST">
-        {% csrf_token %}
-        {{ invite_form.as_p }}
-        <input type="submit" value="Submit">
-    </form>
-    <h2>
-        Description: {{ team.description }} <a href="{% url 'teams:edit_team' team.id %}"></a>
-    </h2>
-    <a href="{% url 'teams:create_todo_list' team.id %}">Create Shared Todo List</a>
+<header class ="bg-white shadow-md">
+    <h2 class="text-3xl text-center font-semibold text-gray-800">{{team.name}}</h2> <!-- Centered page title with text formatting-->
+    <nav class="flex justify-center space-x-4 py-4"> <!-- Flexbox for horizontal spacing between links -->
+                <a href="{% url 'teams:get_team' team.id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View Shared Todo Items</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:edit_team' team.id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Edit Team</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:send_invite' team.id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Send an Invite</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:create_todo_list' team.id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Create New Shared Todo List</a> <!-- Button with hover effect -->
+    </nav>
+</header>
     {% if todo_dict %}
         {% for todo_list, todo_items in todo_dict.items %}
-            <h3>{{ todo_list.name }}</h3>
-            <ul>
-                <li>
-                    <a href="{% url 'teams:edit_todo_list' todo_list.id %}">Edit</a>
-                </li>
-                <li>
-                    <a href="{% url 'teams:delete_list_confirmation' team.id todo_list.id %}">Delete</a>
-                </li>
-            </ul>
+        <h2 class="text-2xl text-center font-semibold text-gray-800 mt-4">{{todo_list.name}}</h2>
             {% if todo_items %}
-                <table>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Due Date</th>
-                        <th>Assigned To</th>
-                    </tr>
-                    {% for td in todo_items %}
+            <div class="overflow-x-auto"> <!-- Makes the table horizontally scrollable on small screens -->
+                <table class="min-w-full table-auto border-collapse"> <!-- Full-width table with auto column sizing-->
+                    <thead class="bg-gray-100 border-b-2 border-gray-200"> <!-- Light gray background for the header with bottom border -->
                         <tr>
-                            <td>{{ td.title }}</td>
-                            <td>{{ td.description }}</td>
-                            <td>{{ td.due_date }}</td>
-                            <td>{{ td.assigned_to|default_if_none:"No team member assigned." }}</td>
+                            <!-- Header Columns -->
+                            <th class="text-left px-6 py-3">Title</th>
+                            <th class="text-left px-6 py-3">Description</th>
+                            <th class="text-left px-6 py-3">Due Date</th>
+                            <th class="text-left px-6 py-3">Completion</th>
+                            <th class="text-left px-6 py-3">Progress</th>
+                            <th class="text-left px-6 py-3">Priority</th>
+                            <th class="text-left px-6 py-3">Assigned To</th>
+                            <th class="text-left px-6 py-3">Edit</th>
+                            <th class="text-left px-6 py-3">Delete</th>
                         </tr>
+                    </thead>
+                    {% for td in todo_items %}
+                        <tbody>
+                            <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> 
+                                <td class="px-6 py-4">{{ td.title }}</td>
+                                <td class="px-6 py-4">{{ td.description }}</td>
+                                <td class="px-6 py-4">{{ td.due_date }}</td>
+                                <td class="px-6 py-4">
+                                    {% if td.is_completed %}
+                                        <span class="text-green-500">Completed</span>
+                                    {% else %}
+                                        <a href="{% url 'teams:mark_completed' td.id team.id%}" class="text-yellow-500 hover:underline">Mark Complete</a>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">{{ td.progress|floatformat:"0" }}%</td>
+                                <td class="px-6 py-4">{{ td.get_priority_display|default:"" }}</td>
+                                <td class="px-6 py-4">{{ td.assigned_to|default_if_none:"No team member assigned." }}</td>
+                                <td>
+                                    <a href="{% url 'teams:edit_todo_item' team.id todo_list.id td.id %}" class="text-blue-500 hover:underline" >Edit Item</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'teams:delete_item_confirmation' team.id td.id %}" class="text-red-500 hover:underline">Delete Item</a>
+                                </td>
+                            </tr>
+                        </tbody>
                     {% endfor %}
                 </table>
+            </div>
             {% else %}
-                No Todo Items in this shared list.
+                <tr>
+                    <p class="text-center text-gray-500">No Todo Items in this shared list.</p> <!-- Spans all columns if no items are found -->
+                </tr>
             {% endif %}
+            <p class="text-center mt-8 mb-32">
+                <a href="{% url 'teams:create_todo_item' team.id todo_list.id %}" class="w-full bg-blue-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">Add Todo Item</a>
+                <a href="{% url 'teams:edit_todo_list' team.id todo_list.id %}" class="w-full bg-blue-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">Edit List</a>
+                <a href="{% url 'teams:delete_list_confirmation' team.id todo_list.id %}" class="w-full bg-red-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">Delete List</a>
+            </p>
         {% endfor %}
     {% else %}
-        <p>No Shared Todo Lists.</p>
+        <p class="text-center mt-8">No Shared Todo Lists.</p>
+        
     {% endif %}
+    
 {% endblock %}

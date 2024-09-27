@@ -1,39 +1,27 @@
 {% extends "teams/base.html" %}
+{% load widget_tweaks %}
 {% block title %}Edit Todo List{% endblock %}
 {% block content %}
-    <h1>{{ todo_list.name }}</h1>
-    <form method="POST">
+<header class ="bg-white shadow-md">
+    <h2 class="text-3xl text-center font-semibold text-gray-800">{{team_name}}</h2> <!-- Centered page title with text formatting-->
+    <nav class="flex justify-center space-x-4 py-4"> <!-- Flexbox for horizontal spacing between links -->
+                <a href="{% url 'teams:get_team' team_id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View Shared Todo Items</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:edit_team' team_id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Edit Team</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:send_invite' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Send an Invite</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:create_todo_list' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Create New Shared Todo List</a> <!-- Button with hover effect -->
+    </nav>
+</header>
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mt-4 mb-8">Edit Todo List: {{todo_list.name}}</h2>
+    <form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"> <!-- Centered form with padding, border, and shadow -->
         {% csrf_token %}
-        {{ todo_list_form.as_p }}
-        <input type="submit" value="Submit">
+        <div class="mb-4">
+            <label for="name" class="block font-medium text-gray-700"> Change Todo List Name:</label>
+            <div class="border border-gray-300 rounded-lg p-2 w-full"> <!-- Full-width container for the input field -->
+                {{ todo_list_form.name|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width select field with focus styling -->
+            </div>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+            Save Changes
+        </button>    
     </form>
-    <a href="{% url 'teams:create_todo_item' todo_list.id %}">Add Todo Item</a>
-    {% if todo_items %}
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Due Date</th>
-                <th>Assigned To</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            {% for td in todo_items %}
-                <tr>
-                    <td>{{ td.title }}</td>
-                    <td>{{ td.description }}</td>
-                    <td>{{ td.due_date }}</td>
-                    <td>{{ td.assigned_to|default_if_none:"No team member assigned." }}</td>
-                    <td>
-                        <a href="{% url 'teams:edit_todo_item' todo_list.id td.id %}">EDIT</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'teams:delete_todo_item' todo_list.id td.id %}">DELETE</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No Todo Items in this shared list.</p>
-    {% endif %}
 {% endblock %}

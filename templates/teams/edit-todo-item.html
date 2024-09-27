@@ -1,10 +1,76 @@
 {% extends "teams/base.html" %}
-{% block title %}Edit Todo Item{% endblock %}
+{% load widget_tweaks %}
+{% block title %}Create New Todo Item{% endblock %}
 {% block content %}
-    <h2>Edit {{ todo_item.title }}</h2>
-    <form method="POST">
+<header class ="bg-white shadow-md">
+    <h2 class="text-3xl text-center font-semibold text-gray-800">{{team_name}}</h2> <!-- Centered page title with text formatting-->
+    <nav class="flex justify-center space-x-4 py-4"> <!-- Flexbox for horizontal spacing between links -->
+                <a href="{% url 'teams:get_team' team_id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View Shared Todo Items</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:edit_team' team_id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Edit Team</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:send_invite' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Send an Invite</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:create_todo_list' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Create New Shared Todo List</a> <!-- Button with hover effect -->
+    </nav>
+</header>
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mt-4 mb-8">Edit Todo Item: {{ todo_item.title }}</h2>
+    <form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"> <!-- Centered form with padding, border, and shadow -->
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
+        <!-- Title Field -->
+        <div class="mb-4">
+            <label for="title" class="block font-medium text-gray-700">Title:</label>
+            <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the input field -->
+                {{ form.title|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width input field with focus styling -->
+            </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="mb-4">
+            <label for="description" class="block font-medium text-gray-700">Description:</label>
+            <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the input field -->
+                {{ form.description|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width input field with focus styling -->
+            </div>
+        </div>
+
+        <!-- Due Date Field -->
+        <div class="mb-4">
+            <label for="due_date" class="block font-medium text-gray-700">Due Date:</label>
+            <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the input field -->
+                {{ form.due_date|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width input field with focus styling -->
+            </div>
+        </div>
+
+        <!-- Is Completed Checkbox -->
+        <div class="mb-4">
+            <label for="is_completed" class="block font-medium text-gray-700">Is Completed:</label>
+            <div class="p-2"> <!-- Padding without border -->
+                {{ form.is_completed }} <!-- Rendering checkbox without extra container like others -->
+            </div>
+        </div>
+
+        <!-- Priority Field -->
+        <div class="mb-4">
+            <label for="priority" class="block font-medium text-gray-700">Priority:</label>
+            <div class="border border-gray-300 rounded-lg p-2"> <!-- Container for the select field -->
+                {{ form.priority|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width select field with focus styling -->
+            </div>
+        </div>
+
+
+        <!-- Progress Bar -->
+        <div class="mb-4">
+            <label for="progress" class="block font-medium text-gray-700">Progress:</label>
+            <div class="p-2"> <!-- Padding without border -->
+                {{ form.progress }} <!-- Render the progress bar without extra container like others -->
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <label for="Assigned" class="block font-medium text-gray-700">Assigned To:</label>
+            <div class="p-2"> <!-- Padding without border -->
+                {{ form.assigned_to }} <!-- Render the progress bar without extra container like others -->
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"> <!-- Full-width submit button with hover effect -->
     </form>
 {% endblock %}

@@ -1,25 +1,40 @@
+
 {% extends "teams/base.html" %}
 {% block title %}All Teams{% endblock %}
 {% block content %}
-    <a href="{% url 'teams:create_team' %}">Create New Team</a>
+
+<h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">All Teams</h2> <!-- Centered page title -->
+    <div class="text-center mb-6"> <!-- Center the button with margin bottom -->
+        <a href="{% url 'teams:create_team' %}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">Create New Team</a> <!-- Button with hover effect -->
+    </div>
     {% if teams_list %}
-        <table>
-            <tr>
-                <th>Team Name</th>
-                <th>Delete Team</th>
-            </tr>
-            {% for team in teams_list %}
+    <div class="overflow-x-auto">        
+        <table class="min-w-full table-auto border-collapse">
+            <thead class="bg-gray-100 border-b-2 border-gray-200"> <!-- Flexbox for aligning text and button, with bottom border and padding -->
                 <tr>
-                    <td>
-                        <a href="{% url 'teams:get_team' team.id %}">{{ team.name }}</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'teams:delete_team_confirmation' team.id %}">Delete</a>
-                    </td>
+                    <th class="font-bold"> Team Name </th>
+                    <th class="font-bold"> Description </th>
+                    <th class="font-bold"> Delete? </th>
                 </tr>
+            </thead>
+            {% for team in teams_list %}
+                <tbody>
+                    <tr class="bg-white border-b border-gray-200"> <!-- Flexbox for aligning text and button, with bottom border and padding -->
+                        <td class="px-6 py-4">
+                            <a href="{% url 'teams:get_team' team.id %}" class="text-blue-500 hover:underline">{{ team.name }}</a> <!-- Display the category name -->
+                        </td>
+                        <td class="px-6 py-4">
+                            {{team.description}}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{% url 'teams:delete_team_confirmation' team.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect -->
+                        </td>
+                    </tr>
+                </tbody>
             {% endfor %}
         </table>
+    </div>
     {% else %}
-        <p>No Teams.</p>
+    <p class="text-center text-gray-500">No Teams.</p> <!-- Centered message with gray text -->
     {% endif %}
 {% endblock %}
