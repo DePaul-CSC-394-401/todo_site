@@ -1,6 +1,12 @@
 {% extends "user_profile/base.html" %}
+{% load widget_tweaks %}
 {% block title %}Invalid Activation Link{% endblock %}
 {% block content %}
-    <h2>Invalid activation link</h2>
-    <p>The activation link is invalid! Please register again!!</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center">Invalid activation link!</h2>
+        <p class="text-center mt-8">The activation link is invalid! Please register again!!</p>
+    </div>
+</div>
 {% endblock %}
+
