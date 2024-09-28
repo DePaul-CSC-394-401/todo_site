@@ -24,8 +24,9 @@
                     <div class="mb-2">
                         <span class="font-semibold text-gray-700">Completed:</span> {% if td.is_completed %} Yes {% else %} No {% endif %}
                     </div>
-                    <div class="flex justify-end">
+                    <div class="flex justify-between">
                         <a href="{% url 'todo:restore_from_archive' td.id %}" class="text-blue-500 hover:underline">Restore</a>
+                        <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a>
                     </div>
                 </li>
             {% endfor %}

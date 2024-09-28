@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>
-            {% block title %}{% endblock %}
-        </title>
-    </head>
-    <body>
-        <header>
-            <nav>
-                <a href="{% url 'teams:get_teams' %}">View All Teams</a>
-                <a href="{% url 'teams:invites' %}">Team Invites</a>
-                <a href="{% url 'todo:todo_list' %}">Personal Todo List</a>
-                <a href="{% url 'user_profile:logout' %}">Logout</a>
-            </nav>
-        </header>
-        <main>
-            {% if messages %}
-                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
-            {% endif %}
-            {% block content %}{% endblock %}
-        </main>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- For mobile devices -->
+    <title>{% block title %}{% endblock %}</title> <!-- Placeholder for page title -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> <!-- Tailwind CSS Integration -->
+</head>
+<body class="bg-gray-100"> <!-- Universal background color (light gray) for pages -->
+    
+    <!-- Header Section -->
+    <header class="bg-white shadow-md"> <!-- White background with shadow for separation -->
+        <!-- Navigation Bar -->
+        <nav class="flex justify-center space-x-4 py-4"> <!-- Flexbox for horizontal spacing between links -->
+            <!-- Each nav link has hover effects: changing text and adding a bottom border -->
+            <a href="{% url 'teams:get_teams' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View All Teams</a>
+            <a href="{% url 'teams:invites' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Team Invites</a>
+            <a href="{% url 'todo:todo_list' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View Personal Todo Items</a>
+            <a href="{% url 'user_profile:profile' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Profile</a>
+            <a href="{% url 'user_profile:logout' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Log out</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto p-4"> <!-- Container for main content, auto-centered with padding -->
+        {% block content %}{% endblock %} <!-- Placeholder for content injected by each page -->
+    </main>
+
+</body>
 </html>

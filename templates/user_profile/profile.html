@@ -2,7 +2,26 @@
 {% block title %}Profile{% endblock %}
 {% load widget_tweaks %}
 {% block content %}
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+<header class="bg-white shadow-md"> <!-- White background with shadow for separation -->
+    <!-- Navigation Bar -->
+    <nav class="flex justify-center space-x-4 py-4"> <!-- Flexbox for horizontal spacing between links -->
+        <!-- Each nav link has hover effects: changing text and adding a bottom border -->
+        <a href="{% url 'todo:create_todo_item' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Create Todo Item</a>
+        <a href="{% url 'todo:todo_list' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View All Todo Items</a>
+        <a href="{% url 'todo:categories' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Categories</a>
+        <a href="{% url 'todo:view_archive' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Archive</a>
+        <a href="{% url 'teams:get_teams' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Teams</a>
+        <a href="{% url 'user_profile:profile' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Profile</a>
+        <a href="{% url 'user_profile:logout' %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Log out</a>
+    </nav>
+    
+    <!-- Search Form -->
+    <form action="{% url 'todo:search_results' %}" method="get" class="flex justify-center mt-2"> <!-- Centered search bar -->
+        <input name="search_text" type="text" placeholder="Search..." 
+               class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <!-- Styled input with border and focus effect -->
+    </form>
+</header>
+    <div class="min-h-screen flex items-start justify-center bg-gray-100 pt-32">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6 text-center">Welcome, {{ user.username }}</h2>
             {% if updated %}<p class="text-green-600 mb-4 text-center">Profile Successfully Updated.</p>{% endif %}

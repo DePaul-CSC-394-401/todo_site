@@ -1,12 +1,39 @@
 {% extends "teams/base.html" %}
 {% block title %}Confirm Deletion{% endblock %}
 {% block content %}
+    <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Confirm Deletion</h2> <!-- Centered title with spacing -->
+
     {% if delete_team %}
-        <a href="{% url 'teams:delete_team' team_id %}">Confirm Deletion</a>
-        <a href="{% url 'teams:get_teams' %}">Cancel</a>
-    {% endif %}
-    {% if delete_todo_list %}
-        <a href="{% url 'teams:delete_todo_list' team_id todo_list_id %}">Confirm Deletion</a>
-        <a href="{% url 'teams:get_team' team_id %}">Cancel</a>
+        <p class="text-center text-gray-600 mb-6">Are you sure you want to delete this team?</p> <!-- Centered message -->
+        <div class="flex justify-center space-x-4"> <!-- Centered flexbox container for buttons with spacing between them -->
+            <a href="{% url 'teams:delete_team' team_id %}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                Confirm Deletion
+            </a>
+            <a href="{% url 'teams:get_teams' %}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
+                Cancel
+            </a>
+        </div>
+    {% elif delete_todo_list %}
+        <p class="text-center text-gray-600 mb-6">Are you sure you want to delete this Todo List?</p> <!-- Centered message -->
+        <div class="flex justify-center space-x-4"> <!-- Centered flexbox container for buttons with spacing between them -->
+            <a href="{% url 'teams:delete_todo_list' team_id todo_list_id %}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                Confirm Deletion
+            </a>
+            <a href="{% url 'teams:get_team' team_id %}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
+                Cancel
+            </a>
+        </div>
+    {% elif delete_todo_item %}
+        <p class="text-center text-gray-600 mb-6">Are you sure you want to delete this Todo Item?</p> <!-- Centered message -->
+        <div class="flex justify-center space-x-4"> <!-- Centered flexbox container for buttons with spacing between them -->
+            <a href="{% url 'teams:delete_todo_item' team_id todo_id %}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                Confirm Deletion
+            </a>
+            <a href="{% url 'teams:get_team' team_id %}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
+                Cancel
+            </a>
+        </div>
     {% endif %}
 {% endblock %}
+
+

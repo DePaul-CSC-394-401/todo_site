@@ -8,7 +8,7 @@
 
     <!-- Filter by Category -->
     <form id="category-filter-form" method="GET" class="mb-6 flex justify-start">
-        <label for="filter-by-category" class="mr-2">Category:</label>
+        <label for="filter-by-category" class="mr-2">Filter by Category:</label>
         <select name="filter-by-category"
                 id="filter-by-category"
                 onchange="this.form.submit()"
@@ -33,8 +33,7 @@
                     <th class="text-left px-6 py-3">
                         <a href="{% querystring order_by='due_date' %}" class="text-blue-500 hover:underline">Due Date</a>
                     </th>
-                    <th class="text-left px-6 py-3">Start</th>
-                    <th class="text-left px-6 py-3">Stop</th>
+                    <th class="text-left px-6 py-3">Start/Stop Timer</th>
                     <th class="text-left px-6 py-3">Time Spent</th>
                     <th class="text-left px-6 py-3">Status</th>
                     <th class="text-left px-6 py-3">Progress</th>
@@ -51,67 +50,57 @@
                 {% if todo_items %}
                     <!-- Loop through each Todo item -->
                     {% for td in todo_items %}
-                        <!--Start check for archived items -->
                         {% if not td.is_archived %}
+                            <!-- Row Styling: White background wiht bottom border -->
+                            <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> <!-- Green background if item is completed -->
+                                <!-- Data Columns -->
+                                <td class="px-6 py-4">{{ td.title }}</td>
+                                <td class="px-6 py-4">{{ td.category.name|default:"" }}</td>
+                                <td class="px-6 py-4">{{ td.description }}</td>
+                                <td class="px-6 py-4">{{ td.due_date }}</td>
 
-                        <!-- Row Styling: White background wiht bottom border -->
-                        <tr class="bg-white border-b border-gray-200 {% if td.is_completed %}bg-green-100{% endif %}"> <!-- Green background if item is completed -->
-                            <!-- Data Columns -->
-                            <td class="px-6 py-4">{{ td.title }}</td>
-                            <td class="px-6 py-4">{{ td.category.name|default:"" }}</td>
-                            <td class="px-6 py-4">{{ td.description }}</td>
-                            <td class="px-6 py-4">{{ td.due_date }}</td>
+                                <!-- Start and Stop Button -->
+                                <td class="px-6 py-4">
+                                    {% if td.timer_started %}
+                                        <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-red-500 hover:underline">Stop Timer</a> <!-- Stop link with hover effect-->
+                                    {% else %}
+                                        <a href="{% url 'todo:start_todo_item' td.id %}" class="text-blue-500 hover:underline">Start Timer</a> <!-- Start link with hover effect-->
+                                    {% endif %}
+                                </td>
 
-                            <!-- Start Button or Timer Running -->
-                            <td class="px-6 py-4">
-                                {% if td.timer_started %}
-                                    Timer Running
-                                {% else %}
-                                    <a href="{% url 'todo:start_todo_item' td.id %}" class="text-blue-500 hover:underline">Start</a> <!-- Start link with hover effect-->
-                                {% endif %}
-                            </td>
+                                <!-- Time Spent -->
+                                <td class="px-6 py-4">{{ td.total_time_spent }}</td>
 
-                            <!-- Stop Button -->
-                            <td class="px-6 py-4">
-                                {% if td.timer_started %}
-                                    <a href="{% url 'todo:stop_todo_item' td.id %}" class="text-red-500 hover:underline">Stop</a> <!-- Stop link with hover effect-->
-                                {% else %}
-                                    Timer Stopped
-                                {% endif %}
-                            </td>
+                                <!-- Status Complete or Mark Complete -->
+                                <td class="px-6 py-4">
+                                    {% if td.is_completed %}
+                                        <span class="text-green-500">Completed</span>
+                                    {% else %}
+                                        <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">Mark Complete</a>
+                                    {% endif %}
+                                </td>
 
-                            <!-- Time Spent -->
-                            <td class="px-6 py-4">{{ td.total_time_spent }}</td>
+                                <!-- Progress and Priority -->
+                                <td class="px-6 py-4">{{ td.progress|floatformat:"0" }}%</td>
+                                <td class="px-6 py-4">{{ td.get_priority_display|default:"" }}</td>
 
-                            <!-- Status Complete or Mark Complete -->
-                            <td class="px-6 py-4">
-                                {% if td.is_completed %}
-                                    <span class="text-green-500">Complete</span>
-                                {% else %}
-                                    <a href="{% url 'todo:mark_completed' td.id %}" class="text-yellow-500 hover:underline">In Progress Click to Mark Complete</a>
-                                {% endif %}
-                            </td>
+                                <!-- Edit Button -->
+                                <td class="px-6 py-4">
+                                    <a href="{% url 'todo:edit_todo_item' td.id %}" class="text-blue-500 hover:underline">Edit</a> <!-- Edit link with hover effect-->
+                                </td>
 
-                            <!-- Progress and Priority -->
-                            <td class="px-6 py-4">{{ td.progress|floatformat:"0" }}%</td>
-                            <td class="px-6 py-4">{{ td.get_priority_display|default:"" }}</td>
+                                <!-- Delete Button -->
+                                <td class="px-6 py-4">
+                                    <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red-->
+                                </td>
 
-                            <!-- Edit Button -->
-                            <td class="px-6 py-4">
-                                <a href="{% url 'todo:edit_todo_item' td.id %}" class="text-blue-500 hover:underline">Edit</a> <!-- Edit link with hover effect-->
-                            </td>
-
-                            <!-- Delete Button -->
-                            <td class="px-6 py-4">
-                                <a href="{% url 'todo:delete_confirmation' td.id %}" class="text-red-500 hover:underline">Delete</a> <!-- Delete link with hover effect in red-->
-                            </td>
-
-                            <!-- Archive Button -->
-                            <td class="px-6 py-4">
-                                <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
-                            </td>
-                        </tr>
-
+                                <!-- Archive Button (edited to only display for completed)-->
+                                <td class="px-6 py-4">
+                                    {% if td.is_completed %}
+                                    <a href="{% url 'todo:archive' td.id %}" class="text-gray-500 hover:underline">Archive</a> <!-- Archive link with hover effect in gray-->
+                                    {% endif %}  
+                                </td>
+                            </tr>
                         {% endif %}
                     {% endfor %}
                 {% else %}

@@ -87,7 +87,10 @@ def edit_todo_item(request, pk):
 def delete_todo_item(request, pk):
     td_item = TodoItem.objects.get(pk=pk)
     td_item.delete()
-    return redirect("todo:todo_list")
+    if td_item.is_archived == True:
+        return redirect("todo:view_archive")
+    else:
+        return redirect("todo:todo_list")
 
 
 @login_required(login_url="user_profile:login")

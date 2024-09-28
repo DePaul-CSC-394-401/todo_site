@@ -1,6 +1,6 @@
 {% extends "teams/base.html" %}
 {% load widget_tweaks %}
-{% block title %}Create New Todo List{% endblock %}
+{% block title %}Send Invite{% endblock %}
 {% block content %}
 <header class ="bg-white shadow-md">
     <div class="w-full flex justify-center">
@@ -13,18 +13,28 @@
                 <a href="{% url 'teams:create_todo_list' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Create New Shared Todo List</a> <!-- Button with hover effect -->
     </nav>
 </header>
-    <form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-32"> <!-- Centered form with padding, border, and shadow -->
-        <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Create New Shared Todo List</h2>
-        {% csrf_token %}
-        <div class="mb-4">
-            <label for="name" class="block font-medium text-gray-700">Name:</label>
-            <div class="border border-gray-300 rounded-lg p-2 w-full"> <!-- Full-width container for the input field -->
-                {{ form.name|add_class:"w-full border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 p-2" }} <!-- Full-width select field with focus styling -->
-            </div>
+    <div class="min-h-screen flex items-start justify-center mt-32 bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Send Invite</h2> <!-- Centered title -->
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ invite_form.receiver.label_tag }} <!-- Replace 'field_name' with your actual field name -->
+                    {{ invite_form.receiver|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }} 
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 mt-4">
+                    Send
+                </button> <!-- Full-width save button -->
+            </form>
         </div>
-        <input type="submit" value="Submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"> <!-- Full-width submit button with hover effect -->
-    
-    </form>
+    </div>
 {% endblock %}
+
+
+
+
+
 
 

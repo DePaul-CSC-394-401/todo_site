@@ -40,7 +40,6 @@ def get_team(request, team_id):
     context = {"team": team, "todo_dict": todo_dict, "invite_form": invite_form}
     return render(request, "teams/get-team.html", context)
 
-
 @login_required(login_url="user_profile:login")
 def edit_team(request, team_id):
     team = Team.objects.get(pk=team_id)
@@ -52,7 +51,7 @@ def edit_team(request, team_id):
             return redirect("teams:get_team", team_id=team_id)
     else:
         form = TeamForm(instance=team)
-    context = {"form": form}
+    context = {"form": form, "team_id": team_id, "team_name": team.name}
     return render(request, "teams/edit-team.html", context)
 
 
@@ -94,25 +93,48 @@ def create_todo_list(request, team_id):
             return redirect("teams:get_team", team_id=team_id)
     else:
         form = TodoListForm()
-    context = {"form": form}
+    context = {"form": form, "team_id": team_id, "team_name": team.name}
     return render(request, "teams/create-todo-list.html", context)
 
 
 @login_required(login_url="user_profile:login")
-def edit_todo_list(request, todo_list_id):
+def send_invite(request, team_id):
+    team = Team.objects.get(pk=team_id)
+    if request.method == "POST":
+        invite_form = SendInviteForm(request.POST)
+        if invite_form.is_valid():
+            invite = invite_form.save(commit=False)
+            invite.team = team
+            invite.sender = request.user
+            invite.save()
+            messages.success(request, "Team Invite Sent!")
+            return redirect("teams:get_team", team_id=team_id)
+    else:
+        invite_form = SendInviteForm()
+    context = {"invite_form": invite_form, "team_id": team_id, "team_name": team.name}
+    return render(request, "teams/send-invite.html", context)
+
+
+@login_required(login_url="user_profile:login")
+def edit_todo_list(request, team_id, todo_list_id):
     todo_list = TodoList.objects.get(pk=todo_list_id)
+    team = Team.objects.get(todolist=todo_list)
     todo_items = TodoItem.objects.filter(todo_list=todo_list)
     if request.method == "POST":
         todo_list_form = TodoListForm(request.POST, instance=todo_list)
         if todo_list_form.is_valid():
             todo_list_form.save()
             messages.success(request, "Todo List Successfully Updated")
+            return redirect("teams:get_team", team_id=team_id)
+
     else:
         todo_list_form = TodoListForm(instance=todo_list)
     context = {
         "todo_list": todo_list,
         "todo_items": todo_items,
         "todo_list_form": todo_list_form,
+        "team_id":team_id,
+        "team_name":team.name
     }
     return render(request, "teams/edit-todo-list.html", context)
 
@@ -125,7 +147,7 @@ def delete_todo_list(request, team_id, todo_list_id):
 
 
 @login_required(login_url="user_profile:login")
-def create_todo_item(request, todo_list_id):
+def create_todo_item(request, team_id, todo_list_id):
     todo_list = TodoList.objects.get(pk=todo_list_id)
     # todo: option to view users for current team, to assign item to user
     team = Team.objects.get(todolist=todo_list)
@@ -138,25 +160,25 @@ def create_todo_item(request, todo_list_id):
             item.todo_list = todo_list
             item.save()
             messages.success(request, "Todo Item Created")
-            return redirect("teams:edit_todo_list", todo_list_id=todo_list_id)
+            return redirect("teams:get_team", team_id=team_id)
     else:
         form = TeamTodoForm()
         form.fields["assigned_to"].queryset = team_users
-    context = {"form": form}
+    context = {"form": form, "team_id":team_id, "team_name":team.name}
     return render(request, "teams/create-todo-item.html", context)
 
 
 @login_required(login_url="user_profile:login")
-def delete_todo_item(request, todo_id, todo_list_id):
+def delete_todo_item(request, team_id, todo_id):
     todo_item = TodoItem.objects.get(pk=todo_id)
     todo_item.delete()
-    messages.success(request, "Todo Item Deleted")
-    return redirect("teams:edit_todo_list", todo_list_id=todo_list_id)
+    return redirect("teams:get_team", team_id=team_id)
 
 
 @login_required(login_url="user_profile:login")
 def edit_todo_item(
     request,
+    team_id,
     todo_list_id,
     todo_id,
 ):
@@ -171,11 +193,11 @@ def edit_todo_item(
         if form.is_valid():
             form.save()
             messages.success(request, "Todo Item Updated")
-            return redirect("teams:edit_todo_list", todo_list_id=todo_list_id)
+            return redirect("teams:get_team", team_id=team_id)
     else:
         form = TeamTodoForm(instance=todo_item)
         form.fields["assigned_to"].queryset = team_users
-    context = {"form": form, "todo_item": todo_item}
+    context = {"form": form, "todo_item": todo_item, "team_id": team_id, "team_name": team.name}
     return render(request, "teams/edit-todo-item.html", context)
 
 
@@ -185,6 +207,15 @@ def delete_list_confirmation(request, team_id, todo_list_id):
         "todo_list_id": todo_list_id,
         "team_id": team_id,
         "delete_todo_list": True,
+    }
+    return render(request, "teams/confirm-deletion.html", context)
+
+@login_required(login_url="user_profile:login")
+def delete_item_confirmation(request, todo_id, team_id):
+    context = {
+        "todo_id": todo_id,
+        "team_id": team_id,
+        "delete_todo_item": True,
     }
     return render(request, "teams/confirm-deletion.html", context)
 
@@ -208,3 +239,15 @@ def accept_invite(request, invite_id):
     team.customuser_set.add(user)
     team_invite.delete()
     return redirect("teams:invites")
+
+def decline_invite(request, invite_id):
+    team_invite = TeamInvite.objects.get(pk=invite_id) 
+    team_invite.delete()
+    return redirect("teams:invites")
+
+def mark_completed(request, pk, team_id):
+    td_item = TodoItem.objects.get(pk=pk)
+    td_item.is_completed = True
+    td_item.progress = 100
+    td_item.save()
+    return redirect("teams:get_team", team_id=team_id)

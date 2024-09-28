@@ -1,10 +1,54 @@
 {% extends "teams/base.html" %}
+{% load widget_tweaks %}
 {% block title %}Edit Team{% endblock %}
 {% block content %}
-    <h2>Edit {{ team }}</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
-    </form>
+<header class ="bg-white shadow-md">
+    <div class="w-full flex justify-center">
+        <h2 class="text-3xl font-semibold text-gray-800">{{team_name}}</h2> <!-- Centered page title with text formatting-->
+    </div>
+    <nav class="flex justify-center space-x-4 py-4"> <!-- Flexbox for horizontal spacing between links -->
+                <a href="{% url 'teams:get_team' team_id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">View Shared Todo Items</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:edit_team' team_id%}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Edit Team</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:send_invite' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Send an Invite</a> <!-- Button with hover effect -->
+                <a href="{% url 'teams:create_todo_list' team_id %}" class="text-gray-800 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-500 transition-all">Create New Shared Todo List</a> <!-- Button with hover effect -->
+    </nav>
+</header>
+    <div class="min-h-screen flex items-start justify-center bg-gray-100 mt-16">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Edit Team</h2> <!-- Centered title -->
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    {{ form.name.label_tag}}
+                    {{ form.name|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                    {% if form.name.errors %}
+                        <div class="text-red-500 mt-2 text-sm">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.description.label_tag}}
+                    {{ form.description|add_class:"form-control w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                    {% if form.description.errors %}
+                        <div class="text-red-500 mt-2 text-sm">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                    Save Changes
+                </button> <!-- Full-width save button -->
+            </form>
+        </div>
+    </div>
 {% endblock %}
+
+
+
+
+
+
+
