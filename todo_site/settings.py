@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "teams.apps.TeamsConfig",
     "widget_tweaks",
     "djangoviz",
+    "django_extensions"
 ]
 
 MIDDLEWARE = [
