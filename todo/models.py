@@ -86,4 +86,4 @@ class TodoItem(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime("%m/%d/%Y at %H:%M:%S")}, Is Completed: {self.is_completed}"
+        return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime('%m/%d/%Y at %H:%M:%S')}, Is Completed: {self.is_completed}"
