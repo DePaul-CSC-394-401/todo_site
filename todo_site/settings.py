@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "todo.apps.TodoConfig",
+    "user_profile.apps.UserProfileConfig",
+    "teams.apps.TeamsConfig",
+    "widget_tweaks",
+    "djangoviz",
 ]
 
 MIDDLEWARE = [
@@ -78,13 +82,13 @@ WSGI_APPLICATION = "todo_site.wsgi.application"
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': 5432,
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_NAME"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.getenv('DB_HOST', 'db'),
+        "PORT": os.getenv('DB_PORT', '5432'),
     }
 }
 
