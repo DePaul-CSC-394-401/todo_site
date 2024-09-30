@@ -6,24 +6,36 @@
 
 <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Team Invites</h2> <!-- Centered page title -->
     {% if invites %}
-    <ul class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6"> <!-- Centered list container with padding and shadow -->
-        <table>
-            <li class="flex justify-between items-center border-b py-4"> <!-- Flexbox for aligning text and button, with bottom border and padding -->
-                <p class="font-bold"> Team Name </p>
-                <p class="font-bold"> Sent By </p>
-                <p class="font-bold"> Accept? </p>
-                <p class="font-bold"> Decline? </p> 
-            </li>
+    <div class="overflow-x-auto">  <!-- Centered list container with padding and shadow -->
+        <table class="min-w-half content-center table-auto border-collapse" style="margin:0 auto;">
+            <thead class="bg-gray-100 border-b-2 border-gray-200"> <!-- Flexbox for aligning text and button, with bottom border and padding -->
+                <tr>               
+                    <th class="font-bold text-left px-6 py-3"> Team Name </th>
+                    <th class="font-bold text-left px-6 py-3"> Sent By </th>
+                    <th class="font-bold text-left px-6 py-3"> Accept? </th>
+                    <th class="font-bold text-left px-6 py-3">Decline? </th> 
+                </tr>
+            </thead>
             {% for invite in invites %}
-                <li class="flex justify-between items-center border-b py-4"> <!-- Flexbox for aligning text and button, with bottom border and padding -->
-                    <p> {{invite.team.name}} </p>
-                    <p> {{invite.sender.username}} </p>
-                    <a href="{% url 'teams:accept-invite' invite.id %}" class="text-green-500 hover:underline">Accept</a> 
-                    <a href="{% url 'teams:decline-invite' invite.id %}" class="text-red-500 hover:underline">Decline</a> 
-
-                </li>
+                </tbody>
+                    <tr class="bg-white border-b border-gray-200">
+                        <td class="px-6 py-4">
+                            {{invite.team.name}} 
+                        </td>
+                        <td class="px-6 py-4"> 
+                            {{invite.sender.username}} 
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{% url 'teams:accept-invite' invite.id %}" class="text-green-500 hover:underline">Accept</a> 
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{% url 'teams:decline-invite' invite.id %}" class="text-red-500 hover:underline">Decline</a> 
+                        </td>
+                    </tr>
+                </tbody>
             {% endfor %}
         </table>
+    </div>
     {% else %}
     <p class="text-center text-gray-500">No Team Invites.</p> <!-- Centered message with gray text -->
     {% endif %}
