@@ -1,9 +1,13 @@
 from django.urls import path
 
 from . import views
+from .views import notifications, mark_as_read, send_reminder
 
 app_name = "todo"
 urlpatterns = [
+    path('notifications/', notifications, name='notifications'),
+    path('notifications/mark-as-read/<int:notification_id>/', views.mark_as_read, name='mark_as_read'),
+    path('send-reminder/', views.send_reminder, name='send_reminder'),
     path("", views.todo_list, name="todo_list"),
     path("create-todo-item", views.create_todo_item, name="create_todo_item"),
     path("edit-todo-item/<int:pk>/", views.edit_todo_item, name="edit_todo_item"),

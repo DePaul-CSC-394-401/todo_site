@@ -6,6 +6,12 @@
     <!-- Page Title -->
     <h2 class="text-3xl text-center font-semibold text-gray-800 mb-8">Todo Items</h2> <!-- Centered page title with text formatting-->
 
+    <!-- Button to Trigger All Reminders-->
+     <div class="mb-6 flex justify-end">
+        <a href="{% url 'todo:send_reminder' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            Due Today
+        </a>
+     </div>
     <!-- Filter by Category -->
     <form id="category-filter-form" method="GET" class="mb-6 flex justify-start">
         <label for="filter-by-category" class="mr-2">Filter by Category:</label>

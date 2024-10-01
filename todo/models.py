@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Case, Value, When
 from django.contrib.postgres.search import SearchVector
+from django.utils import timezone
 from datetime import timedelta
 
 from teams.models import Team, TodoList
@@ -33,6 +34,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class Notification(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    todo_item = models.ForeignKey('TodoItem', on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notification: {self.message}"
 
 class TodoItem(models.Model):
 
@@ -70,6 +80,7 @@ class TodoItem(models.Model):
         blank=True,
         related_name="assigned_to",
     )
+    reminder_sent = models.BooleanField(default=False) # new field to track if reminder has been sent
     objects = TodoQuerySet.as_manager()
 
     def update_total_time_spent(self):
@@ -87,3 +98,15 @@ class TodoItem(models.Model):
 
     def __str__(self) -> str:
         return f"Title: {self.title}, Description: {self.description}, Due Date: {self.due_date.strftime('%m/%d/%Y at %H:%M:%S')}, Is Completed: {self.is_completed}"
+
+
+    def send_reminder(self, reminder_timeframe=timedelta(days=1)):
+        if not self.reminder_sent and self.due_date:
+            if timezone.now() >= self.due_date - reminder_timeframe:
+                Notification.objects.create(
+                    user=self.user,
+                    todo_item=self,
+                    message=f"Reminder: {self.title} is due soon."
+                )
+                self.reminder_sent = True
+                self.save()

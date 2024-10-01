@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .models import TodoItem, Category
+from .models import Notification, TodoItem, Category
 from .forms import TodoForm, CategoryForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -171,7 +171,26 @@ def stop_todo_item(request, pk):
     td.save()
     return redirect("todo:todo_list")
 
+@login_required(login_url="user_profile:login")
+def notifications(request):
+    notifications = Notification.objects.filter(user=request.user, is_read=False)
+    return render(request, "todo/notifications.html", {"notifications": notifications})
 
+@login_required(login_url="user_profile:login")
+def mark_as_read(request, notification_id):
+    notification = Notification.objects.get(id=notification_id, user=request.user)
+    notification.is_read = True
+    notification.save()
+    return redirect("todo:notifications")
+
+@login_required(login_url="user_profile:login")
+def send_reminder(request):
+    user = request.user
+    todo_items= TodoItem.objects.filter(user=user, is_completed=False)
+    for todo_item in todo_items:
+        if todo_item.due_date and timezone.now() >= todo_item.due_date - timezone.timedelta(days=1) and not todo_item.reminder_sent:
+            todo_item.send_reminder()
+    return redirect("todo:todo_list")
 # def search_results(request):
 #     user = request.user
 #     search_text = request.GET.get("search_text")

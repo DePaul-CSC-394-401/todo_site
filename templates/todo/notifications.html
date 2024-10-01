@@ -1,0 +1,21 @@
+{% extends 'todo/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+    <h2 class="text-2xl font-semibold mb-4">Notifications</h2>
+
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                {{ notification.message }}
+                <a href="{% url 'todo:mark_as_read' notification.id %}" class="text-blue-500 hover:underline">Mark as Read</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if not notifications %}
+        <p>No new notifications.</p>
+    {% endif %}
+{% endblock %}
